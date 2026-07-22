@@ -1,0 +1,13 @@
+project_id = "wtoddchuzjnroktuvthe"
+
+[functions.api]
+verify_jwt = false
+
+[functions.faucetpay-payouts]
+verify_jwt = false
+
+[functions.announce-worker]
+verify_jwt = false
+
+[functions.market-notify-worker]
+verify_jwt = false
