@@ -12,14 +12,14 @@ export default class ErrorBoundary extends Component<{ children: ReactNode }, St
   }
   componentDidCatch(error: Error, info: unknown) {
     // eslint-disable-next-line no-console
-    console.error("[CloudEarn] Crash:", error, info);
+    console.error("[MangoCash] Crash:", error, info);
   }
   render() {
     if (this.state.error) {
       return (
         <div className="flex min-h-screen flex-col items-center justify-center gap-3 p-6 text-center text-foreground">
-          <div className="text-5xl">☁️</div>
-          <h1 className="text-gradient-primary font-display text-xl font-bold">Cloud Earn</h1>
+          <div className="text-5xl">🥭</div>
+         <h1 className="text-gradient-primary font-display text-xl font-bold">MangoCash</h1>
           <p className="text-sm text-muted-foreground">Something went wrong.</p>
           <pre className="max-w-full overflow-auto rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-left text-xs text-destructive">
             {this.state.error.message}
