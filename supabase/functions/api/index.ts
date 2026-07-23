@@ -25,6 +25,9 @@ const MINING_RATE_PER_HOUR = 50;
 const MINING_BASE_HOURS = 1;
 const MINING_MAX_HOURS = 6;
 const MINING_CHANNEL = (Deno.env.get("MINING_CHANNEL") || "cloudearnnews").replace(/^@/, "");
+const REF_BONUS_MINING = 300;
+const REF_BONUS_DAY = 500;
+const REF_BONUS_DAILY_ADS_REQUIRED = 10;
 
 // ─── Cloud Market ────────────────────────────────────────────
 // Server is source of truth for product prices/rates. Any drift with the
