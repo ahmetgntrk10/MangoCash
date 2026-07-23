@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import MiningCard from "@/components/MiningCard";
-import CloudMarket from "@/components/CloudMarket";
-import CloudTapTap from "@/components/CloudTapTap";
+import MangoMarket from "@/components/MangoMarket";
+import MangoTapTap from "@/components/MangoTapTap";
 import { Zap, ChevronRight } from "lucide-react";
 import { haptic } from "@/lib/telegram";
 import { apiCall } from "@/lib/api";
@@ -22,7 +22,7 @@ export default function EarnPage({ tgId }: { tgId: number | null }) {
   useEffect(() => { cleanupLegacyXox(); }, []);
 
   if (view === "taptap") {
-    return <CloudTapTap tgId={tgId} onBack={() => setView("earn")} />;
+    return <MangoTapTap tgId={tgId} onBack={() => setView("earn")} />;
   }
 
   return (
@@ -50,7 +50,7 @@ export default function EarnPage({ tgId }: { tgId: number | null }) {
         <h1 className="mb-3 font-display text-xl font-bold text-gradient-earn">
           {t("earn.marketTitle", "Cloud Market")}
         </h1>
-        <CloudMarket tgId={tgId} />
+        <MangoMarket tgId={tgId} />
       </div>
     </div>
   );
