@@ -29,7 +29,7 @@ export default function EarnPage({ tgId }: { tgId: number | null }) {
     <div className="space-y-5">
       <MiningCard tgId={tgId} />
 
-      {/* Cloud Tap-Tap entry (market-style card, opens a sub-view) */}
+      {/* Mango Tap-Tap entry (market-style card, opens a sub-view) */}
       <button
         onClick={() => { haptic("light"); setView("taptap"); }}
         className="flex w-full items-center gap-3 rounded-3xl bg-gradient-card px-4 py-4 text-left shadow-elegant ring-1 ring-primary-glow/15 transition active:scale-[0.99]"
@@ -38,9 +38,9 @@ export default function EarnPage({ tgId }: { tgId: number | null }) {
           <Zap className="h-5 w-5 text-earn-foreground" />
         </div>
         <div className="flex-1">
-          <div className="font-display text-base font-bold">Cloud Tap-Tap</div>
+          <div className="font-display text-base font-bold">Mango Tap-Tap</div>
           <div className="text-[11px] text-muted-foreground">
-            Tap to earn up to 1,000 ☁️ every day. Short ad every 100 ☁️.
+            Tap to earn up to 1,000 🥭 every day. Short ad every 100 🥭.
           </div>
         </div>
         <ChevronRight className="h-5 w-5 text-primary-glow" />
@@ -48,7 +48,7 @@ export default function EarnPage({ tgId }: { tgId: number | null }) {
 
       <div className="pt-2">
         <h1 className="mb-3 font-display text-xl font-bold text-gradient-earn">
-          {t("earn.marketTitle", "Cloud Market")}
+          {t("earn.marketTitle", "Mango Market")}
         </h1>
         <MangoMarket tgId={tgId} />
       </div>
