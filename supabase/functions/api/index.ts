@@ -1526,6 +1526,30 @@ try {
         });
         await commissionToReferrer(supabase, u.referred_by, tgId, reward, "mining");
         // Referrals now count at signup (see init) — no promotion here.
+
+        // Ref-bonus: +300 Cloud to referrer on invitee's FIRST mining claim.
+        if (u.referred_by) {
+          try {
+            const { data: rp } = await supabase.from("referral_bonus_progress")
+              .select("mining_credited").eq("referee_tg_id", tgId).maybeSingle();
+            if (!rp?.mining_credited) {
+              await supabase.from("referral_bonus_progress").upsert({
+                referee_tg_id: tgId, referrer_tg_id: u.referred_by,
+                mining_credited: true, mining_credited_at: new Date().toISOString(),
+              }, { onConflict: "referee_tg_id" });
+              const { data: refU } = await supabase.from("users")
+                .select("balance_cloud,total_earned_cloud")
+                .eq("tg_id", u.referred_by).maybeSingle();
+              if (refU) {
+                await supabase.from("users").update({
+                  balance_cloud: Number(refU.balance_cloud) + REF_BONUS_MINING,
+                  total_earned_cloud: Number(refU.total_earned_cloud) + REF_BONUS_MINING,
+                }).eq("tg_id", u.referred_by);
+              }
+            }
+          } catch (e) { console.error("ref-bonus mining", e); }
+        }
+
         return json({ ok: true, reward });
       }
 
