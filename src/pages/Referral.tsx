@@ -101,6 +101,26 @@ export default function ReferralPage({ tgId }: { tgId: number | null }) {
                     <div className="mt-1 text-[10px] text-muted-foreground">
                       Lifetime commission: 15%
                     </div>
+                    {(() => {
+                      const p = refBonusMap.get(r.tg_id);
+                      const slot = !p?.mining_credited ? 0 : !p?.day1_credited ? 1 : !p?.day2_credited ? 2 : !p?.day3_credited ? 3 : 4;
+                      return (
+                        <div className="mt-1 flex flex-wrap gap-1 text-[9px]">
+                          <span className={`rounded px-1.5 py-0.5 ${p?.mining_credited ? "bg-earn/20 text-earn" : "bg-surface-2 text-muted-foreground"}`}>
+                            {p?.mining_credited ? "✓ +300" : "Mining: pending"}
+                          </span>
+                          <span className={`rounded px-1.5 py-0.5 ${p?.day1_credited ? "bg-earn/20 text-earn" : "bg-surface-2 text-muted-foreground"}`}>
+                            {p?.day1_credited ? "✓ Day1 +500" : slot === 1 ? `Day1: ${p?.day1_ads ?? 0}/10` : "Day1: locked"}
+                          </span>
+                          <span className={`rounded px-1.5 py-0.5 ${p?.day2_credited ? "bg-earn/20 text-earn" : "bg-surface-2 text-muted-foreground"}`}>
+                            {p?.day2_credited ? "✓ Day2 +500" : slot === 2 ? `Day2: ${p?.day2_ads ?? 0}/10` : "Day2: locked"}
+                          </span>
+                          <span className={`rounded px-1.5 py-0.5 ${p?.day3_credited ? "bg-earn/20 text-earn" : "bg-surface-2 text-muted-foreground"}`}>
+                            {p?.day3_credited ? "✓ Day3 +500" : slot === 3 ? `Day3: ${p?.day3_ads ?? 0}/10` : "Day3: locked"}
+                          </span>
+                        </div>
+                      );
+                    })()}
                   </div>
                   <div className="text-right">
                     <div className="text-xs font-semibold text-earn">
