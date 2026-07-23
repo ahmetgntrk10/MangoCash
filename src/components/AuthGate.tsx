@@ -12,7 +12,7 @@ export default function AuthGate({ auth, children }: { auth: AuthState; children
           transition={{ duration: 1.6, repeat: Infinity }}
           className="text-gradient-primary text-6xl font-display"
         >
-          ☁️
+          🥭
         </motion.div>
       </div>
     );
@@ -68,8 +68,8 @@ export default function AuthGate({ auth, children }: { auth: AuthState; children
   if (auth.error) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-3 p-6 text-center">
-        <div className="text-5xl">☁️</div>
-        <h1 className="text-gradient-primary text-2xl font-bold font-display">Cloud Earn</h1>
+        <div className="text-5xl">🥭</div>
+        <h1 className="text-gradient-primary text-2xl font-bold font-display">MangoCash</h1>
         <p className="max-w-xs text-sm text-muted-foreground">{auth.error}</p>
         <div className="mt-4 flex flex-col gap-2">
           {auth.retry && (
@@ -81,7 +81,7 @@ export default function AuthGate({ auth, children }: { auth: AuthState; children
             </button>
           )}
           <a
-            href="https://t.me/CloudEarnBot"
+            href="https://t.me/MangoCashBot"
             className="rounded-full border border-border bg-surface-1/60 px-6 py-2.5 text-sm font-semibold"
           >
             Open in Telegram
