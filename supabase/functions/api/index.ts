@@ -1002,6 +1002,13 @@ try {
         return json({ data: merged });
       }
 
+      case "ref_bonus_progress": {
+        const { data } = await supabase.from("referral_bonus_progress")
+          .select("*").eq("referrer_tg_id", tgId)
+          .order("created_at", { ascending: false });
+        return json({ data: data ?? [] });
+      }
+
       // ───── ADMIN ─────
       case "admin_list_users": {
         await requireAdmin();
