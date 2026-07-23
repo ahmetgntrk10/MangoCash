@@ -107,16 +107,16 @@ export default function ReferralPage({ tgId }: { tgId: number | null }) {
                       return (
                         <div className="mt-1 flex flex-wrap gap-1 text-[9px]">
                           <span className={`rounded px-1.5 py-0.5 ${p?.mining_credited ? "bg-earn/20 text-earn" : "bg-surface-2 text-muted-foreground"}`}>
-                            {p?.mining_credited ? "✓ +300" : "Mining: pending"}
+                            {p?.mining_credited ? t("refBonus.miningDone") : t("refBonus.miningPending")}
                           </span>
                           <span className={`rounded px-1.5 py-0.5 ${p?.day1_credited ? "bg-earn/20 text-earn" : "bg-surface-2 text-muted-foreground"}`}>
-                            {p?.day1_credited ? "✓ Day1 +500" : slot === 1 ? `Day1: ${p?.day1_ads ?? 0}/10` : "Day1: locked"}
+                            {p?.day1_credited ? t("refBonus.day1Done") : slot === 1 ? t("refBonus.day1Progress", { n: p?.day1_ads ?? 0 }) : t("refBonus.day1Locked")}
                           </span>
                           <span className={`rounded px-1.5 py-0.5 ${p?.day2_credited ? "bg-earn/20 text-earn" : "bg-surface-2 text-muted-foreground"}`}>
-                            {p?.day2_credited ? "✓ Day2 +500" : slot === 2 ? `Day2: ${p?.day2_ads ?? 0}/10` : "Day2: locked"}
+                            {p?.day2_credited ? t("refBonus.day2Done") : slot === 2 ? t("refBonus.day2Progress", { n: p?.day2_ads ?? 0 }) : t("refBonus.day2Locked")}
                           </span>
                           <span className={`rounded px-1.5 py-0.5 ${p?.day3_credited ? "bg-earn/20 text-earn" : "bg-surface-2 text-muted-foreground"}`}>
-                            {p?.day3_credited ? "✓ Day3 +500" : slot === 3 ? `Day3: ${p?.day3_ads ?? 0}/10` : "Day3: locked"}
+                            {p?.day3_credited ? t("refBonus.day3Done") : slot === 3 ? t("refBonus.day3Progress", { n: p?.day3_ads ?? 0 }) : t("refBonus.day3Locked")}
                           </span>
                         </div>
                       );
