@@ -25,6 +25,14 @@ export default function ReferralPage({ tgId }: { tgId: number | null }) {
     queryFn: async () => (await apiCall<{ data: any[] }>("list_referrals")).data ?? [],
   });
 
+  const { data: refBonusProgress } = useQuery({
+    queryKey: ["ref-bonus", tgId],
+    enabled: !!tgId,
+    queryFn: async () => (await apiCall<{ data: any[] }>("ref_bonus_progress")).data ?? [],
+  });
+  const refBonusMap = new Map<number, any>();
+  for (const p of refBonusProgress ?? []) refBonusMap.set(Number(p.referee_tg_id), p);
+
   function copy() {
     navigator.clipboard.writeText(link); haptic("light"); toast.success(t("common.copied"));
   }
