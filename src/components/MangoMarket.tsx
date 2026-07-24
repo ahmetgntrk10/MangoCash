@@ -364,7 +364,7 @@ function MyMangos({ tgId }: { tgId: number | null }) {
       if (r?.error) { toast.error(r.error); return; }
       haptic("success");
       const done = r.daily_claims_today ?? (row.claimsToday + 1);
-      toast.success(`+${r.reward ?? row.p.hourlyRate} ☁️  (${done}/7 today)`);
+      toast.success(`+${r.reward ?? row.p.hourlyRate} 🥭  (${done}/7 today)`);
       qc.invalidateQueries({ queryKey: ["market_status", tgId] });
       qc.invalidateQueries({ queryKey: ["user", tgId] });
     } finally { setBusy(null); }
@@ -391,16 +391,16 @@ function MyMangos({ tgId }: { tgId: number | null }) {
         <div className="flex items-start justify-between">
           <div>
             <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Collections to be gathered</div>
-            <div className="mt-1 font-display text-lg font-bold text-gradient-primary">My Clouds</div>
+            <div className="mt-1 font-display text-lg font-bold text-gradient-primary">My Mangos</div>
           </div>
           <span className="rounded-full border border-earn/40 bg-earn/10 px-2 py-0.5 text-[10px] font-bold text-earn">
             {totals.readyCount} ready
           </span>
         </div>
         <div className="mt-3 grid grid-cols-3 gap-2 text-center">
-          <Stat label="Cloud Owned" value={`${totals.total}`} tone="primary" />
-          <Stat label="Cloud / hr" value={`${totals.perHour}`} tone="primary" />
-          <Stat label="Pending" value={`${totals.pending} ☁️`} tone="earn" />
+          <Stat label="Mango Owned" value={`${totals.total}`} tone="primary" />
+          <Stat label="Mango / hr" value={`${totals.perHour}`} tone="primary" />
+          <Stat label="Pending" value={`${totals.pending} 🥭`} tone="earn" />
         </div>
       </div>
 
