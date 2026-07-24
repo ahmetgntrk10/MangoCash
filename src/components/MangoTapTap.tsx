@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { ChevronLeft, Cloud, Lock, Loader2, PlayCircle, Zap } from "lucide-react";
+import { ChevronLeft, Lock, Loader2, PlayCircle, Zap } from "lucide-react";
 import { apiCall, requestAdTicket } from "@/lib/api";
 import { TAPTAP } from "@/lib/config";
 import { haptic } from "@/lib/telegram";
@@ -31,7 +31,7 @@ function useCountdown(iso?: string) {
   return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
 }
 
-export default function CloudTapTap({ tgId, onBack }: { tgId: number | null; onBack: () => void }) {
+export default function MangoTapTap({ tgId, onBack }: { tgId: number | null; onBack: () => void }) {
   const qc = useQueryClient();
   const { data, refetch } = useQuery<Status>({
     queryKey: ["taptap_status", tgId],
@@ -117,7 +117,7 @@ export default function CloudTapTap({ tgId, onBack }: { tgId: number | null; onB
           <ChevronLeft className="h-4 w-4" /> Back
         </button>
         <div className="rounded-full bg-white/10 px-3 py-1.5 text-xs font-semibold text-white ring-1 ring-white/15">
-          {fmt(earned)} <span className="text-white/60">/ {fmt(limit)}</span> ☁️
+          {fmt(earned)} <span className="text-white/60">/ {fmt(limit)}</span> 🥭
         </div>
       </div>
 
@@ -126,9 +126,9 @@ export default function CloudTapTap({ tgId, onBack }: { tgId: number | null; onB
         <div className="mx-auto grid h-11 w-11 place-items-center rounded-2xl bg-gradient-earn shadow-earn">
           <Zap className="h-5 w-5 text-earn-foreground" />
         </div>
-        <h1 className="mt-2 font-display text-2xl font-bold text-gradient-earn">Cloud Tap-Tap</h1>
+        <h1 className="mt-2 font-display text-2xl font-bold text-gradient-earn">Mango Tap-Tap</h1>
         <p className="mt-1 text-xs text-white/60">
-          Tap the cloud to earn +{TAPTAP.PER_TAP} ☁️. Every {TAPTAP.AD_EVERY} ☁️ requires a short ad.
+          Tap the mango to earn +{TAPTAP.PER_TAP} 🥭. Every {TAPTAP.AD_EVERY} 🥭 requires a short ad.
         </p>
       </div>
 
@@ -181,7 +181,7 @@ export default function CloudTapTap({ tgId, onBack }: { tgId: number | null; onB
               )}
             </div>
           ) : (
-            <Cloud className="relative h-24 w-24 text-white drop-shadow-lg" strokeWidth={1.5} />
+            <span className="relative text-8xl drop-shadow-lg select-none">🥭</span>
           )}
 
           {/* Floating +5 markers */}
@@ -195,7 +195,7 @@ export default function CloudTapTap({ tgId, onBack }: { tgId: number | null; onB
                 transition={{ duration: 0.85, ease: "easeOut" }}
                 className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-display text-xl font-bold text-white drop-shadow"
               >
-                +{TAPTAP.PER_TAP} ☁️
+                +{TAPTAP.PER_TAP} 🥭
               </motion.span>
             ))}
           </AnimatePresence>
@@ -217,7 +217,7 @@ export default function CloudTapTap({ tgId, onBack }: { tgId: number | null; onB
       <div className="mt-2">
         <div className="mb-1 flex items-center justify-between text-[11px] text-white/60">
           <span>Daily progress</span>
-          <span>{fmt(earned)} / {fmt(limit)} ☁️</span>
+          <span>{fmt(earned)} / {fmt(limit)} 🥭</span>
         </div>
         <div className="h-2.5 w-full overflow-hidden rounded-full bg-white/10 ring-1 ring-white/10">
           <motion.div
