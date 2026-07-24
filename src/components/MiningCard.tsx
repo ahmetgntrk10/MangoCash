@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Cloud, Gift, Loader2, Play, PlusCircle, ExternalLink, Megaphone, CheckCircle2, X } from "lucide-react";
+import { Gift, Loader2, Play, PlusCircle, ExternalLink, Megaphone, CheckCircle2, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { apiCall, requestAdTicket } from "@/lib/api";
 import { showRewardedChain } from "@/lib/ads/chain";
@@ -104,7 +104,7 @@ export default function MiningCard({ tgId }: { tgId: number | null }) {
         return;
       }
       haptic("success");
-      toast.success(`+${res?.reward ?? reward} ☁️`);
+      toast.success(`+${res?.reward ?? reward} 🥭`);
       qc.invalidateQueries({ queryKey: ["mining_status", tgId] });
       qc.invalidateQueries({ queryKey: ["user", tgId] });
     } finally { setBusy(false); }
@@ -171,7 +171,7 @@ export default function MiningCard({ tgId }: { tgId: number | null }) {
       <div className="relative flex items-center justify-between">
         <div className="font-display text-base font-bold">{t("mining.title")}</div>
         <div className="rounded-full border border-primary-glow/30 bg-surface-1/60 px-3 py-0.5 text-[11px] font-semibold text-primary-glow">
-          {MINING.ratePerHour} ☁️/h
+          {MINING.ratePerHour} 🥭/h
         </div>
       </div>
 
@@ -183,7 +183,7 @@ export default function MiningCard({ tgId }: { tgId: number | null }) {
           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
           className="grid h-32 w-32 place-items-center rounded-full bg-gradient-primary shadow-glow"
         >
-          <Cloud className="h-16 w-16 text-primary-foreground" />
+          <span className="text-6xl">🥭</span>
         </motion.div>
         <div className="mt-3 font-display text-2xl font-bold tabular-nums text-foreground">
           {status?.state === "idle" && "00:00:00"}
