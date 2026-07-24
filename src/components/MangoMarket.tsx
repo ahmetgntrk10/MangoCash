@@ -168,13 +168,13 @@ function MarketList({ tgId }: { tgId: number | null }) {
 
   async function buy(p: MangoMarketProduct) {
     if (!user || busy) return;
-    if (ownedIds.has(p.id)) { toast.error("You already own this Cloud"); return; }
-    if ((user.balance_cloud ?? 0) < p.cost) { toast.error("Not enough ☁️"); return; }
+    if (ownedIds.has(p.id)) { toast.error("You already own this Mango"); return; }
+if ((user.balance_cloud ?? 0) < p.cost) { toast.error("Not enough 🥭"); return; }
     setBusy(p.id);
     try {
       const r = await apiCall<{ ok?: boolean; error?: string }>("market_buy", { product_id: p.id });
       if (r?.error) {
-        toast.error(r.error === "already_owned" ? "You already own this Cloud" : r.error);
+        toast.error(r.error === "already_owned" ? "You already own this Mango" : r.error)
         return;
       }
       haptic("success");
@@ -189,7 +189,7 @@ function MarketList({ tgId }: { tgId: number | null }) {
   return (
     <>
       <div className="grid grid-cols-2 gap-3">
-        {CLOUD_MARKET.map((p) => {
+        {MANGO_MARKET.map((p) => {
           const owned = ownedIds.has(p.id);
           return (
           <motion.button
@@ -216,7 +216,7 @@ function MarketList({ tgId }: { tgId: number | null }) {
               <span className="text-earn">+{p.hourlyRate}/h</span>
               <span className="text-muted-foreground">· {p.adsRequired} ad{p.adsRequired > 1 ? "s" : ""}</span>
             </div>
-            <div className="mt-1 text-[11px] font-semibold text-primary-glow">-{p.cost} ☁️</div>
+            <div className="mt-1 text-[11px] font-semibold text-primary-glow">-{p.cost} 🥭</div>
           </motion.button>
           );
         })}
@@ -253,7 +253,7 @@ function MarketList({ tgId }: { tgId: number | null }) {
               </div>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{detail.desc}</p>
               <div className="mt-4 grid grid-cols-3 gap-2 text-center">
-                <Stat label="Cost" value={`${detail.cost} ☁️`} />
+                <Stat label="Cost" value={`${detail.cost} 🥭`} />
                 <Stat label="Yield/h" value={`+${detail.hourlyRate}`} tone="earn" />
                 <Stat label="Ads / claim" value={`${detail.adsRequired}`} tone="primary" />
               </div>
@@ -271,7 +271,7 @@ function MarketList({ tgId }: { tgId: number | null }) {
                   ? "Purchasing…"
                   : ownedIds.has(detail.id)
                     ? "Already owned"
-                    : `Buy for ${detail.cost} ☁️`}
+                    : `Buy for ${detail.cost} 🥭`}
               </button>
             </motion.div>
           </motion.div>
@@ -291,7 +291,7 @@ function Stat({ label, value, tone }: { label: string; value: string; tone?: "ea
   );
 }
 
-function MyClouds({ tgId }: { tgId: number | null }) {
+function MyMangos({ tgId }: { tgId: number | null }) {
   const qc = useQueryClient();
   const { showClosedEarly } = useAdGate();
   const [now, setNow] = useState(Date.now());
@@ -307,7 +307,7 @@ function MyClouds({ tgId }: { tgId: number | null }) {
 
   const rows = useMemo(() => {
     return owned.map((o) => {
-      const p = CLOUD_MARKET_BY_ID[o.product_id];
+      const p = MANGO_MARKET_BY_ID[o.product_id];
       if (!p) return null;
       const nextAt = new Date(o.last_claim_at).getTime() + 3600 * 1000;
       const hourReady = now >= nextAt;
@@ -319,7 +319,7 @@ function MyClouds({ tgId }: { tgId: number | null }) {
       const capReached = claimsToday >= 7;
       const ready = hourReady && adsDone >= p.adsRequired && !capReached;
       return { o, p, nextAt, hourReady, adsDone, ready, expiresAt, claimsToday, capReached };
-    }).filter(Boolean) as { o: Owned; p: CloudMarketProduct; nextAt: number; hourReady: boolean; adsDone: number; ready: boolean; expiresAt: number; claimsToday: number; capReached: boolean }[];
+    }).filter(Boolean) as { o: Owned; p: MangoMarketProduct; nextAt: number; hourReady: boolean; adsDone: number; ready: boolean; expiresAt: number; claimsToday: number; capReached: boolean }[];
   }, [owned, now]);
 
   const totals = useMemo(() => {
