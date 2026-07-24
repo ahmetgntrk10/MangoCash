@@ -406,7 +406,7 @@ function MyMangos({ tgId }: { tgId: number | null }) {
 
       {!rows.length && (
         <div className="rounded-2xl bg-gradient-card p-6 text-center text-sm text-muted-foreground">
-          You don't own any Clouds yet. Head to the Market tab to buy your first one.
+          You don't own any Mangos yet. Head to the Market tab to buy your first one.
         </div>
       )}
 
@@ -437,7 +437,7 @@ function MyMangos({ tgId }: { tgId: number | null }) {
                   )}
                 </div>
                 <div className="text-[11px] text-muted-foreground">
-                  +{row.p.hourlyRate} ☁️ per cycle · {row.adsDone}/{row.p.adsRequired} ads
+                  +{row.p.hourlyRate} 🥭 per cycle · {row.adsDone}/{row.p.adsRequired} ads
                 </div>
                 <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-black/25">
                   <div className="h-full bg-gradient-earn" style={{ width: `${barPct}%` }} />
@@ -458,7 +458,7 @@ function MyMangos({ tgId }: { tgId: number | null }) {
                   onClick={() => claim(row)}
                   className="flex flex-1 items-center justify-center gap-1 rounded-xl bg-gradient-earn py-2 text-xs font-bold text-earn-foreground shadow-earn disabled:opacity-50">
                   {busy === row.o.id + ":claim" ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Gift className="h-3.5 w-3.5" />}
-                  Claim +{row.p.hourlyRate} ☁️
+                  Claim +{row.p.hourlyRate} 🥭
                 </button>
               ) : (
                 <button disabled={busy === row.o.id + ":ad"}
