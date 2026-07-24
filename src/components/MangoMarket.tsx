@@ -3,11 +3,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
-  Cloud, ShoppingBag, Store, Gift, Loader2, Sparkles, X, PlayCircle, Clock, Timer,
+  ShoppingBag, Store, Gift, Loader2, Sparkles, X, PlayCircle, Clock, Timer,
 } from "lucide-react";
 import { apiCall, requestAdTicket } from "@/lib/api";
 import {
-  CLOUD_MARKET, CLOUD_MARKET_BY_ID, CloudMarketProduct, CloudMarketRarity,
+  MANGO_MARKET, MANGO_MARKET_BY_ID, MangoMarketProduct, MangoMarketRarity,
   MARKET_ADSGRAM_INT,
 } from "@/lib/config";
 import { useUser } from "@/hooks/useUser";
@@ -29,7 +29,7 @@ type Status = { owned: Owned[] };
 /**
  * Market ad chain: Adsgram Interstitial (click-verified strict) first.
  * On `no-fill` only, fall back to OnClickA (non-strict). Rewarded Adsgram
- * is intentionally NOT used in Cloud Market.
+ * is intentionally NOT used in Mango Market.
  */
 async function showMarketAd(): Promise<AdResult> {
   const first = await showAdsgramInterstitialClickVerified(MARKET_ADSGRAM_INT, 14.5, 2);
@@ -38,15 +38,15 @@ async function showMarketAd(): Promise<AdResult> {
   return await showOnclickaAd();
 }
 
-const RARITY_LABEL: Record<CloudMarketRarity, string> = {
+const RARITY_LABEL: Record<MangoMarketRarity, string> = {
   common: "Common", rare: "Rare", epic: "Epic", legendary: "Legendary", mystic: "Mystic",
 };
-const RARITY_TEXT: Record<CloudMarketRarity, string> = {
+const RARITY_TEXT: Record<MangoMarketRarity, string> = {
   common: "text-sky-300", rare: "text-blue-300", epic: "text-amber-300",
   legendary: "text-fuchsia-300", mystic: "text-emerald-300",
 };
 
-function ProductArt({ p, size = 96 }: { p: CloudMarketProduct; size?: number }) {
+function ProductArt({ p, size = 96 }: { p: MangoMarketProduct; size?: number }) {
   // Inline SVG so product art ships in the bundle (no external assets).
   const colorTop =
     p.rarity === "common"    ? "#7dd3fc" :
@@ -71,7 +71,7 @@ function ProductArt({ p, size = 96 }: { p: CloudMarketProduct; size?: number }) 
         </radialGradient>
       </defs>
       <circle cx="48" cy="48" r="46" fill={`url(#glow-${p.id})`} />
-      {/* Cloud silhouette */}
+      {/* Mango silhouette */}
       <g transform="translate(8 22)">
         <path
           d="M20 34c-9 0-15-6-15-14 0-7 6-12 13-12 2-7 9-12 17-12 10 0 18 7 18 17 8 0 14 5 14 12 0 8-7 14-16 14H20z"
@@ -86,7 +86,7 @@ function ProductArt({ p, size = 96 }: { p: CloudMarketProduct; size?: number }) 
   );
 }
 
-export default function CloudMarket({ tgId }: { tgId: number | null }) {
+export default function MangoMarket({ tgId }: { tgId: number | null }) {
   const [open, setOpen] = useState(false);
   return (
     <div className="rounded-3xl bg-gradient-card shadow-elegant ring-1 ring-primary-glow/15">
@@ -98,9 +98,9 @@ export default function CloudMarket({ tgId }: { tgId: number | null }) {
           <Store className="h-5 w-5 text-earn-foreground" />
         </div>
         <div className="flex-1">
-          <div className="font-display text-base font-bold">Cloud Market</div>
+          <div className="font-display text-base font-bold">Mango Market</div>
           <div className="text-[11px] text-muted-foreground">
-            Buy Clouds that earn every hour. Watch ads to claim their yield.
+            Buy Mangos that earn every hour. Watch ads to claim their yield.
           </div>
         </div>
         <div className={`text-primary-glow transition-transform ${open ? "rotate-180" : ""}`}>▾</div>
@@ -134,7 +134,7 @@ function MarketTabs({ tgId }: { tgId: number | null }) {
             tab === "market" ? "bg-gradient-primary text-primary-foreground shadow-elegant" : "text-muted-foreground"
           }`}
         >
-          <ShoppingBag className="mr-1 inline h-3.5 w-3.5" /> Cloud Market
+          <ShoppingBag className="mr-1 inline h-3.5 w-3.5" /> Mango Market
         </button>
         <button
           onClick={() => setTab("mine")}
@@ -142,17 +142,17 @@ function MarketTabs({ tgId }: { tgId: number | null }) {
             tab === "mine" ? "bg-gradient-primary text-primary-foreground shadow-elegant" : "text-muted-foreground"
           }`}
         >
-          <Cloud className="mr-1 inline h-3.5 w-3.5" /> My Cloud
+          <span className="mr-1">🥭</span> My Mango
         </button>
       </div>
-      {tab === "market" ? <MarketList tgId={tgId} /> : <MyClouds tgId={tgId} />}
+      {tab === "market" ? <MarketList tgId={tgId} /> : <MyMangos tgId={tgId} />}
     </div>
   );
 }
 
 function MarketList({ tgId }: { tgId: number | null }) {
   const { data: user } = useUser(tgId);
-  const [detail, setDetail] = useState<CloudMarketProduct | null>(null);
+  const [detail, setDetail] = useState<MangoMarketProduct | null>(null);
   const qc = useQueryClient();
   const [busy, setBusy] = useState<string | null>(null);
   const { data: status } = useQuery({
@@ -166,7 +166,7 @@ function MarketList({ tgId }: { tgId: number | null }) {
     [status],
   );
 
-  async function buy(p: CloudMarketProduct) {
+  async function buy(p: MangoMarketProduct) {
     if (!user || busy) return;
     if (ownedIds.has(p.id)) { toast.error("You already own this Cloud"); return; }
     if ((user.balance_cloud ?? 0) < p.cost) { toast.error("Not enough ☁️"); return; }
