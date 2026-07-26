@@ -1,6 +1,6 @@
-// CloudEarn — Market claim-ready notifier.
+// MangoCash — Market claim-ready notifier.
 // Scheduled every 5 minutes. For each user with `notify_market = true`,
-// finds Clouds whose hourly cycle just finished AND haven't been notified
+// finds Mangos whose hourly cycle just finished AND haven't been notified
 // for the current cycle yet. Sends one Telegram DM per ready machine
 // and stamps `last_notified_at` so we never spam.
 
@@ -17,11 +17,11 @@ const CORS = {
 };
 
 const PRODUCT_NAMES: Record<string, string> = {
-  tiny: "Tiny Cloud",
-  river: "River Cloud",
-  gold: "Gold Cloud",
-  royal: "Royal Cloud",
-  commit: "Commit Cloud",
+  tiny: "Tiny Mango",
+  river: "River Mango",
+  gold: "Gold Mango",
+  royal: "Royal Mango",
+  commit: "Commit Mango",
 };
 
 function todayUtcKey(): string {
@@ -41,11 +41,11 @@ async function tgSend(chatId: number, text: string) {
 }
 
 function buildMessage(name: string): string {
-  // Unique CloudEarn wording (intentionally different from other bots).
+  // Unique MangoCash wording (intentionally different from other bots).
   return [
-    "⛅️ <b>CloudEarn — Harvest Alert</b>",
+    "🥭 <b>MangoCash — Harvest Alert</b>",
     "",
-    `Your <b>${name}</b> just finished a full hourly cycle and is holding a fresh ☁️ payload.`,
+    `Your <b>${name}</b> just finished a full hourly cycle and is holding a fresh 🥭 payload.`,
     "",
     "Tap the app to collect it before the next cycle takes its slot.",
   ].join("\n");
@@ -93,7 +93,7 @@ Deno.serve(async (req) => {
   for (let i = 0; i < ready.length; i += CHUNK) {
     const batch = ready.slice(i, i + CHUNK);
     const results = await Promise.all(batch.map(async (c: any) => {
-      const name = PRODUCT_NAMES[c.product_id] || "Cloud";
+      const name = PRODUCT_NAMES[c.product_id] || "Mango";
       const ok = await tgSend(Number(c.user_tg_id), buildMessage(name));
       return { id: String(c.id), ok };
     }));
