@@ -590,7 +590,7 @@ export const T: Record<string, any> = {
       submit: "출금 요청", confirmAd: "출금 확인 광고 시청" },
     promo: { enter: "프로모 코드 입력", redeem: "사용", needAd: "코드 인증 광고 시청." },
     mining: {
-      title: "클라우드 채굴",
+      title: "망고 채굴",
       startMining: "채굴 시작",
       tagline: "매시간 {{rate}} 🥭 획득",
       start: "시작",
@@ -666,7 +666,7 @@ export const T: Record<string, any> = {
       submit: "出金リクエスト", confirmAd: "出金確認のため広告を見る" },
     promo: { enter: "プロモコード入力", redeem: "使用", needAd: "コード検証のため広告を見る。" },
     mining: {
-      title: "クラウドマイニング",
+      title: "マンゴーマイニング",
       startMining: "マイニング開始",
       tagline: "毎時 {{rate}} 🥭 を獲得",
       start: "開始",
