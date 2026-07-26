@@ -90,7 +90,7 @@ export default function Home({ tgId }: { tgId: number | null }) {
           <Wallet className="h-3.5 w-3.5" /> {t("common.balance")}
         </div>
         <div className="relative mt-3 flex items-baseline gap-2">
-          <span className="font-display text-5xl font-bold tabular-nums text-foreground">{mango.toLocaleString()}</span>
+           <span key={mango} className="font-display text-5xl font-bold tabular-nums text-foreground animate-balance-pop">{mango.toLocaleString()}</span>
           <span className="text-2xl">🥭</span>
         </div>
         <div className="relative mt-1 text-sm text-muted-foreground">≈ {formatUsdt(usdt)} USDT</div>
