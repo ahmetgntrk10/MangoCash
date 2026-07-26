@@ -67,57 +67,57 @@
   /* CloudEarn — vivid night-sky palette (2026-06-25 refresh).
      Deeper backdrop, brighter cyan/teal primary, richer surfaces,
      additional violet accent for highlights. */
---background: #060B1F;
-  --foreground: #EAF2FF;
-  --surface-1: #131C3D;
-  --surface-2: #1B2654;
-  --card: #131C3D;
-  --card-foreground: #EAF2FF;
-  --popover: #131C3D;
-  --popover-foreground: #EAF2FF;
-  --primary: #00C2FF;
-  --primary-glow: #6CE5FF;
-  --primary-foreground: #02152A;
-  --earn: #00FFC2;
-  --earn-foreground: #02261E;
-  --secondary: #1B2654;
-  --secondary-foreground: #EAF2FF;
-  --muted: rgba(255, 255, 255, 0.06);
-  --muted-foreground: rgba(234, 242, 255, 0.66);
+  --background: #0D0800;
+  --foreground: #FFF3E0;
+  --surface-1: #1A0F00;
+  --surface-2: #251500;
+  --card: #1A0F00;
+  --card-foreground: #FFF3E0;
+  --popover: #1A0F00;
+  --popover-foreground: #FFF3E0;
+  --primary: #FF8C00;
+  --primary-glow: #FFB347;
+  --primary-foreground: #1A0500;
+  --earn: #FFD700;
+  --earn-foreground: #1A1000;
+  --secondary: #251500;
+  --secondary-foreground: #FFF3E0;
+  --muted: rgba(255, 140, 0, 0.08);
+  --muted-foreground: rgba(255, 243, 224, 0.60);
   --accent: #A06CFF;
-  --accent-foreground: #160A2E;
+  --accent-foreground: #1A0500;
   --destructive: #FF4D7A;
   --destructive-foreground: #FFFFFF;
-  --success: #00FFC2;
+  --success: #FFD700;
   --warning: #FFC857;
   --border: rgba(108, 229, 255, 0.12);
   --input: rgba(255, 255, 255, 0.10);
-  --ring: #6CE5FF;
-  --chart-1: #00C2FF;
-  --chart-2: #6CE5FF;
-  --chart-3: #00FFC2;
+  --ring: #FFB347;
+  --chart-1: #FF8C00;
+  --chart-2: #FFB347;
+  --chart-3: #FFD700;
   --chart-4: #FFC857;
   --chart-5: #FF4D7A;
-  --sidebar: #060B1F;
-  --sidebar-foreground: #EAF2FF;
-  --sidebar-primary: #00C2FF;
+  --sidebar: #0D0800;
+  --sidebar-foreground: #FFF3E0;
+  --sidebar-primary: #FF8C00;
   --sidebar-primary-foreground: #02152A;
-  --sidebar-accent: #131C3D;
+  --sidebar-accent: #1A0F00;
   --sidebar-accent-foreground: #EAF2FF;
   --sidebar-border: rgba(108, 229, 255, 0.12);
-  --sidebar-ring: #6CE5FF;
+  --sidebar-ring: #FFB347;
 
-  --gradient-primary: linear-gradient(135deg, #00C2FF 0%, #6CE5FF 60%, #A06CFF 100%);
-  --gradient-earn: linear-gradient(135deg, #00FFC2 0%, #00C2FF 100%);
-  --gradient-card: linear-gradient(180deg, rgba(27,38,84,0.95) 0%, rgba(6,11,31,0.95) 100%);
-  --gradient-bg: radial-gradient(circle at 15% -10%, rgba(108, 229, 255, 0.28) 0%, transparent 55%),
-                 radial-gradient(circle at 90% 5%,  rgba(160, 108, 255, 0.20) 0%, transparent 55%),
-                 radial-gradient(circle at 50% 110%, rgba(0, 255, 194, 0.16) 0%, transparent 60%),
-                 #060B1F;
+  --gradient-primary: linear-gradient(135deg, #FF6B00 0%, #FFB347 60%, #FFD700 100%);
+  --gradient-earn: linear-gradient(135deg, #FFD700 0%, #FF8C00 100%);
+  --gradient-card: linear-gradient(180deg, rgba(37,21,0,0.95) 0%, rgba(13,8,0,0.95) 100%);
+  --gradient-bg: radial-gradient(circle at 15% -10%, rgba(255, 140, 0, 0.22) 0%, transparent 55%),
+                 radial-gradient(circle at 90% 5%,  rgba(255, 215, 0, 0.15) 0%, transparent 55%),
+                 radial-gradient(circle at 50% 110%, rgba(255, 179, 71, 0.12) 0%, transparent 60%),
+                 #0D0800;
   --shadow-elegant: 0 14px 40px -12px rgba(0, 194, 255, 0.45),
                     0 2px 6px -2px rgba(0, 0, 0, 0.4),
                     inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  --shadow-glow:    0 0 48px rgba(108, 229, 255, 0.45);
+  --shadow-glow: 0 0 48px rgba(255, 140, 0, 0.40);
   --shadow-earn:    0 0 44px rgba(0, 255, 194, 0.55);
 }
 
