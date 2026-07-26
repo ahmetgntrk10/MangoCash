@@ -86,7 +86,7 @@ export default function AdminTasks() {
           {form.category === "exclusive" ? (
             <In label="Reward per user (USDT)" v={form.reward_usdt} on={(v: string) => setForm({ ...form, reward_usdt: v })} type="number" />
           ) : (
-            <In label="Reward (☁️)" v={form.reward_cloud} on={(v: string) => setForm({ ...form, reward_cloud: v })} type="number" />
+            <In label="Reward (🥭)" v={form.reward_cloud} on={(v: string) => setForm({ ...form, reward_cloud: v })} type="number" />
           )}
           <Select label="Verification" value={form.verification} onChange={(v: string) => setForm({ ...form, verification: v })} options={VERIFICATIONS as unknown as string[]} />
           {form.verification === "timer" && <In label="Timer (sec)" v={form.timer_seconds} on={(v: string) => setForm({ ...form, timer_seconds: v })} type="number" />}
@@ -103,7 +103,7 @@ export default function AdminTasks() {
                 {t.icon_url && <img src={t.icon_url} alt="" className="h-8 w-8 rounded-full object-cover" />}
                 <div>
                   <div className="text-sm font-semibold">{t.title}</div>
-                  <div className="text-[10px] text-white/40">{t.category} • {t.verification} • +{t.reward_cloud} ☁️</div>
+                  <div className="text-[10px] text-white/40">{t.category} • {t.verification} • +{t.reward_cloud} 🥭</div>
                 </div>
               </div>
               <div className="flex gap-1">
