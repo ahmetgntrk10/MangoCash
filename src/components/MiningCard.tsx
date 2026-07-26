@@ -183,7 +183,9 @@ export default function MiningCard({ tgId }: { tgId: number | null }) {
           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
           className="grid h-32 w-32 place-items-center rounded-full bg-gradient-primary shadow-glow"
         >
-          <span className="text-6xl">🥭</span>
+          <span className="relative text-6xl drop-shadow-lg animate-mango-float animate-mango-pulse">
+  🥭
+</span>
         </motion.div>
         <div className="mt-3 font-display text-2xl font-bold tabular-nums text-foreground">
           {status?.state === "idle" && "00:00:00"}
