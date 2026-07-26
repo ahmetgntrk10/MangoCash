@@ -1122,7 +1122,7 @@ export const T: Record<string, any> = {
       submit: "Yechish so'rovi", confirmAd: "Tasdiq uchun reklama ko'ring" },
     promo: { enter: "Promokod kiriting", redeem: "Ishlatish", needAd: "Kodni tekshirish uchun reklama ko'ring." },
     mining: {
-      title: "Bulut konchiligi",
+      title: "Mango konchiligi",
       startMining: "Konchilikni boshlash",
       tagline: "Har soatda {{rate}} 🥭 ishlang",
       start: "Boshlash",
@@ -1198,7 +1198,7 @@ export const T: Record<string, any> = {
       submit: "Çıxarış istəyi", confirmAd: "Təsdiq üçün reklam izləyin" },
     promo: { enter: "Promokod daxil edin", redeem: "İstifadə et", needAd: "Kodu yoxlamaq üçün reklam izləyin." },
     mining: {
-      title: "Bulud mədənçiliyi",
+      title: "Mango mədənçiliyi",
       startMining: "Mədənçiliyi başlat",
       tagline: "Hər saat {{rate}} 🥭 qazan",
       start: "Başlat",
