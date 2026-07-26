@@ -32,6 +32,8 @@ function useCountdown(iso?: string) {
 }
 
 export default function MangoTapTap({ tgId, onBack }: { tgId: number | null; onBack: () => void }) {
+  const [tapAnim, setTapAnim] = useState(false);
+const [flyItems, setFlyItems] = useState<{ id: number; x: number; y: number }[]>([]);
   const qc = useQueryClient();
   const { data, refetch } = useQuery<Status>({
     queryKey: ["taptap_status", tgId],
