@@ -1,4 +1,4 @@
-// CloudEarn unified API Edge Function (v3 — 2026-06-26).
+// MangoCash unified API Edge Function (v3 — 2026-06-26).
 // Validates Telegram WebApp initData via HMAC, then performs all DB ops with service_role.
 // Deploy: supabase functions deploy api --no-verify-jwt --project-ref <REF>
 // Required secret: TELEGRAM_BOT_TOKEN
