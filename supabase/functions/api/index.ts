@@ -31,7 +31,7 @@ const REF_BONUS_DAILY_ADS_REQUIRED = 10;
 
 // ─── Mango Market ────────────────────────────────────────────
 // Server is source of truth for product prices/rates. Any drift with the
-// client `CLOUD_MARKET` array is corrected against this table.
+// client `MANGO_MARKET` array is corrected against this table.
 const MARKET_PRODUCTS: Record<string, { cost: number; hourlyRate: number; adsRequired: number }> = {
   tiny:   { cost:  8000, hourlyRate: 115, adsRequired: 1 },
   river:  { cost: 11000, hourlyRate: 160, adsRequired: 2 },
