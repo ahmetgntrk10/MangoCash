@@ -88,7 +88,7 @@ export default function AdminAnnounce() {
         {mode === "copy" ? (
           <>
             <div className="text-[10px] text-muted-foreground">
-              Paste a Telegram message link (https://t.me/cloudearnpayment/15) OR set chat + message id manually.
+              Paste a Telegram message link (https://t.me/mangocashpayment/15) OR set chat + message id manually.
               The bot copies the message as its own (no "forwarded from" header). Bot must be admin in the source chat.
             </div>
             <In label="Telegram link or chat @username / id" v={copy.source_chat} on={(v) => setCopy({ ...copy, source_chat: v })} />
