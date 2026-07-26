@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
-import { Users, ListChecks, Megaphone, Wallet, Shield, Ticket, ArrowLeft, Image as ImageIcon, UserCheck, Link2, Cloud } from "lucide-react";
+import { Users, ListChecks, Megaphone, Wallet, Shield, Ticket, ArrowLeft, Image as ImageIcon, UserCheck, Link2, Gem } from "lucide-react";
 import { useIsAdmin } from "@/hooks/useUser";
 import AdminUsers from "./Users";
 import AdminTasks from "./Tasks";
@@ -23,7 +23,7 @@ const SECTIONS: { key: SectionKey; label: string; icon: any; render: () => React
   { key: "announce",  label: "Announce",   icon: Megaphone,  render: () => <AdminAnnounce /> },
   { key: "banners",   label: "Banners",    icon: ImageIcon,  render: () => <AdminBanners /> },
   { key: "partners",  label: "Partners",   icon: Link2,      render: () => <AdminPartners /> },
-  { key: "mining",    label: "Mining",     icon: Cloud,      render: () => <AdminMining /> },
+  { key: "mining",    label: "Mining",     icon: Gem,        render: () => <AdminMining /> },
   { key: "whitelist", label: "Whitelist",  icon: UserCheck,  render: () => <AdminWhitelist /> },
   { key: "admins",    label: "Admins",     icon: Shield,     render: () => <AdminAdmins /> },
 ];
@@ -57,7 +57,7 @@ export default function AdminPage({ tgId }: { tgId: number | null }) {
           </button>
           <div className="flex-1">
             <div className="font-display text-base font-bold">Admin Panel</div>
-            <div className="text-[10px] text-muted-foreground">Cloud Earn</div>
+            <div className="text-[10px] text-muted-foreground">MangoCash</div>
           </div>
         </div>
         <nav className="overflow-x-auto px-2 pb-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
