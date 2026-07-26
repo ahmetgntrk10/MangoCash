@@ -10,7 +10,7 @@ const BOT_TOKEN = Deno.env.get("TELEGRAM_BOT_TOKEN") ?? "";
 const PAYMENT_CHANNEL_ID = Deno.env.get("PAYMENT_CHANNEL_ID") ?? "";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
-const BOT_USERNAME = (Deno.env.get("BOT_USERNAME") || "CloudEarnBot").replace(/^@/, "");
+const BOT_USERNAME = (Deno.env.get("BOT_USERNAME") || "MangoCashBot").replace(/^@/, "");
 const APP_START_LINK = Deno.env.get("APP_START_LINK")
   || `https://t.me/${BOT_USERNAME}/earn?startapp=5640381390`;
 
