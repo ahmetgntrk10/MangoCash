@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Copy, Share2, Users, Cloud, Sparkles } from "lucide-react";
+import { Copy, Share2, Users, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { apiCall } from "@/lib/api";
@@ -10,7 +10,7 @@ import { getTg, haptic } from "@/lib/telegram";
 // refCard image is intentionally not previewed on this page; only used in the
 // shared invite card sent through Telegram.
 
-const BOT_USERNAME = (import.meta.env.VITE_TG_BOT_USERNAME as string) || "CloudEarnBot";
+const BOT_USERNAME = (import.meta.env.VITE_TG_BOT_USERNAME as string) || "MangoCashBot";
 
 export default function ReferralPage({ tgId }: { tgId: number | null }) {
   const { t } = useTranslation();
@@ -58,7 +58,7 @@ export default function ReferralPage({ tgId }: { tgId: number | null }) {
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-3">
         <Stat icon={Users} label={t("ref.totalInvites")} value={user?.referral_count ?? 0} />
-        <Stat icon={Cloud} label={t("ref.totalEarned")} value={`${user?.ref_earnings_cloud ?? 0} ☁️`} earn />
+        <Stat icon={Sparkles} label={t("ref.totalEarned")} value={`${user?.ref_earnings_cloud ?? 0} 🥭`} earn />
       </div>
 
       <div className="flex items-start gap-2 rounded-2xl border border-primary-glow/30 bg-primary/10 px-3 py-2.5 text-[11px] text-foreground">
@@ -124,7 +124,7 @@ export default function ReferralPage({ tgId }: { tgId: number | null }) {
                   </div>
                   <div className="text-right">
                     <div className="text-xs font-semibold text-earn">
-                      {r.commission_total_cloud ?? 0} ☁️
+                      {r.commission_total_cloud ?? 0} 🥭
                     </div>
                     <div className="mt-0.5 text-[10px] text-muted-foreground">earned</div>
                   </div>
