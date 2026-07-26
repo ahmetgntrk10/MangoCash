@@ -91,6 +91,16 @@ const [flyItems, setFlyItems] = useState<{ id: number; x: number; y: number }[]>
     const id = ++nextId.current;
     setFloaters((f) => [...f, { id, x, y }]);
     setTimeout(() => setFloaters((f) => f.filter((x) => x.id !== id)), 900);
+
+    // tap bounce animasyonu
+    setTapAnim(true);
+    setTimeout(() => setTapAnim(false), 250);
+
+    // kazanç uçuşu (+N 🥭)
+    const flyId = Date.now();
+    setFlyItems((prev) => [...prev, { id: flyId, x: Math.random() * 60 - 30, y: 0 }]);
+    setTimeout(() => setFlyItems((prev) => prev.filter((f) => f.id !== flyId)), 900);
+
     haptic("light");
     try {
       const r = await apiCall<{ earned_today: number; locked: boolean; next_lock_at: number; error?: string }>(
