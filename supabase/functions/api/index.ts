@@ -418,7 +418,7 @@ Deno.serve(async (req) => {
           if (banned) return json({ error: "banned" }, 403);
         }
 
-        // Free 3-month Tiny Cloud gift for every new user (if they don't already have one active).
+        // Free 3-month Tiny Mango gift for every new user (if they don't already have one active).
         if (isNew) {
           try {
             const { data: hasTiny } = await supabase.from("user_clouds")
@@ -1576,7 +1576,7 @@ try {
         await commissionToReferrer(supabase, u.referred_by, tgId, reward, "mining");
         // Referrals now count at signup (see init) — no promotion here.
 
-        // Ref-bonus: +300 Cloud to referrer on invitee's FIRST mining claim.
+        // Ref-bonus: +300 Mango to referrer on invitee's FIRST mining claim.
         if (u.referred_by) {
           try {
             const { data: rp } = await supabase.from("referral_bonus_progress")
@@ -1623,7 +1623,7 @@ try {
         return json({ ok: true });
       }
 
-      // ───── CLOUD MARKET ─────
+      // ───── MANGO MARKET ─────
       case "market_status": {
         // First, expire anything past its 30-day life.
         await supabase.from("user_clouds").delete()
@@ -1748,7 +1748,7 @@ try {
         return json({ ok: true, notify_market: on });
       }
 
-      // ───── CLOUD TAP-TAP GAME ─────
+      // ───── MANGO TAP-TAP GAME ─────
       case "taptap_status": {
         const row = await getOrInitTaptap(supabase, tgId);
         return json({
@@ -1863,7 +1863,7 @@ async function commissionToReferrer(supabase: any, refTgId: number | null, refer
 /** No-op kept for call-site compatibility. The 3-ad bonus was retired. */
 async function onAdWatched(_supabase: any, _refereeTgId: number) { /* retired */ }
 
-/* ───── Cloud Tap-Tap helpers ───── */
+/* ───── Mango Tap-Tap helpers ───── */
 function utcTodayIso(): string { return new Date().toISOString().slice(0, 10); }
 function nextUtcMidnightIso(): string {
   const d = new Date();
@@ -1948,7 +1948,7 @@ async function evaluatePromoConditions(
         const min = Math.max(1, Number(c.min || 1));
         const { data: u } = await supabase.from("users").select("balance_cloud").eq("tg_id", tgId).maybeSingle();
         const cur = Number(u?.balance_cloud ?? 0);
-        out.push({ type: c.type, label: `Hold ${min} ☁️`, ok: cur >= min, current: cur, target: min });
+        out.push({ type: c.type, label: `Hold ${min} 🥭`, ok: cur >= min, current: cur, target: min });
       } else if (c?.type === "bio_verified") {
         const { data: u } = await supabase.from("users").select("bio_verified").eq("tg_id", tgId).maybeSingle();
         const ok = !!u?.bio_verified;
@@ -2052,7 +2052,7 @@ async function _announceToPaymentChannel(wd: any) {
     lines.push(`🧾 *TxId:* \`${md(String(tx))}\``);
     if (tx && tx !== "—") lines.push(`[View On Tonviewer](https://tonviewer.com/transaction/${encodeURIComponent(String(tx))})`);
   }
-  lines.push("", "Thank you for using CloudEarn \\! 🎉");
+  lines.push("", "Thank you for using MangoCash \\! 🎉");
   await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
     method: "POST", headers: { "content-type": "application/json" },
     body: JSON.stringify({
@@ -2085,7 +2085,7 @@ async function notifyUserApproved(wd: any) {
     lines.push(`🧾 *TxId:* \`${md(String(tx || "—"))}\``);
     if (tx) buttons.push([{ text: "View On Tonviewer", url: `https://tonviewer.com/transaction/${encodeURIComponent(tx)}` }]);
   }
-  lines.push("", "Thank you for using CloudEarn \\! 🎉");
+  lines.push("", "Thank you for using MangoCash \\! 🎉");
   await sendUserDM(wd.user_tg_id, lines.join("\n"), buttons.length ? { inline_keyboard: buttons } : undefined);
 }
 
@@ -2162,7 +2162,7 @@ async function handleTelegramUpdate(supabase: any, update: any) {
 
   const name = String(from.first_name || from.username || "friend");
   const lines = [
-    `🎁 Welcome to CloudEarn, ${name}`,
+    `🎁 Welcome to MangoCash, ${name}`,
     "",
     "The Telegram Mini App where you can earn up to 0.1$ per day + more than 0.01$ per referral",
     "",
@@ -2175,7 +2175,7 @@ async function handleTelegramUpdate(supabase: any, update: any) {
       chat_id: chatId,
       text: lines.join("\n"),
       disable_web_page_preview: true,
-      reply_markup: { inline_keyboard: [[{ text: "☁️ Open CloudEarn", url: APP_START_LINK }]] },
+      reply_markup: { inline_keyboard: [[{ text: "🥭 Open MangoCash", url: APP_START_LINK }]] },
     }),
   }).catch(() => {});
 }
