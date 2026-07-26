@@ -46,7 +46,7 @@ export default function AdminUsers() {
         tg_id: u.tg_id, delta,
       });
       if (r?.error) { toast.error(r.error); return; }
-      toast.success(`Balance ${delta > 0 ? "+" : ""}${delta} ☁️`);
+      toast.success(`Balance ${delta > 0 ? "+" : ""}${delta} 🥭`);
       setSelected({ ...u, balance_cloud: r.balance_cloud ?? u.balance_cloud });
       setBalanceDelta("");
       qc.invalidateQueries({ queryKey: ["adm-users"] });
@@ -79,7 +79,7 @@ export default function AdminUsers() {
               {u.photo_url ? <img src={u.photo_url} className="h-9 w-9 rounded-full" /> : <div className="grid h-9 w-9 place-items-center rounded-full bg-white/10">{(u.first_name ?? "?")[0]}</div>}
               <div className="flex-1">
                 <div className="text-sm">{u.first_name} @{u.username ?? "—"}</div>
-                <div className="text-[10px] text-white/40">{u.tg_id} • {u.balance_cloud} ☁️</div>
+                <div className="text-[10px] text-white/40">{u.tg_id} • {u.balance_cloud} 🥭</div>
               </div>
             </button>
           </li>
@@ -102,7 +102,7 @@ export default function AdminUsers() {
             </div>
 
             <div className="mt-3 rounded-xl bg-white/5 p-3 ring-1 ring-white/10">
-              <div className="mb-2 text-[11px] uppercase tracking-wider text-white/50">Adjust ☁️ Balance</div>
+              <div className="mb-2 text-[11px] uppercase tracking-wider text-white/50">Adjust 🥭 Balance</div>
               <div className="flex gap-2">
                 <input
                   type="number" inputMode="numeric" value={balanceDelta}
@@ -126,8 +126,8 @@ export default function AdminUsers() {
             <dl className="mt-3 space-y-1 text-xs">
               {Object.entries({
                 "Telegram ID": selected.tg_id, "Username": selected.username,
-                "Balance ☁️": selected.balance_cloud, "Balance USDT": selected.balance_usdt,
-                "Total Earned": selected.total_earned_cloud, "Ref Earnings": selected.ref_earnings_cloud,
+                "Balance 🥭": selected.balance_cloud, "Balance USDT": selected.balance_usdt,
+                "Total Earned 🥭": selected.total_earned_cloud, "Ref Earnings 🥭": selected.ref_earnings_cloud,
                 "Referral Count": selected.referral_count, "Referred By": selected.referred_by,
                 "IP": selected.ip_address, "Country": selected.country,
                 "Status": selected.status, "Warnings": selected.warnings_count,
