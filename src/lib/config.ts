@@ -89,5 +89,5 @@ export const TAPTAP = {
 
 export const CHANNELS = {
   official: "https://t.me/mangocashnews",
-payments: "https://t.me/mangocashpayment",
+payments: "https://t.me/mangocashpayments",
 };
