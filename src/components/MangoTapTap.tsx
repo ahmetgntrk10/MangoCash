@@ -183,7 +183,22 @@ const [flyItems, setFlyItems] = useState<{ id: number; x: number; y: number }[]>
               )}
             </div>
           ) : (
-            <span className="relative text-8xl drop-shadow-lg select-none">🥭</span>
+            <div className="relative flex items-center justify-center">
+  <span
+    className={`relative text-8xl drop-shadow-lg select-none cursor-pointer ${tapAnim ? "animate-tap-bounce" : ""}`}
+  >
+    🥭
+  </span>
+  {flyItems.map(f => (
+    <span
+      key={f.id}
+      className="pointer-events-none absolute animate-earn-fly font-bold text-yellow-400 text-lg"
+      style={{ left: `calc(50% + ${f.x}px)`, bottom: "100%" }}
+    >
+      +{TAPTAP.PER_TAP} 🥭
+    </span>
+  ))}
+</div>
           )}
 
           {/* Floating +5 markers */}
