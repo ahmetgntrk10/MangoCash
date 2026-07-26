@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { apiCall } from "@/lib/api";
 
 const BOT_USERNAME =
-  (import.meta.env.VITE_TG_BOT_USERNAME as string) || "CloudEarnBot";
+  (import.meta.env.VITE_TG_BOT_USERNAME as string) || "MangoCashBot";
 
 export default function AdminPartners() {
   const qc = useQueryClient();
@@ -119,7 +119,7 @@ function StatsModal({ code, onClose }: { code: string; onClose: () => void }) {
             <Stat label="Active 7d" value={s.wau} />
             <Stat label="D1 retention" value={`${s.d1}%`} />
             <Stat label="D7 retention" value={`${s.d7}%`} />
-            <Stat label="Total earned ☁️" value={s.total_earned_cloud} />
+            <Stat label="Total earned 🥭" value={s.total_earned_cloud} />
             <Stat label="Total paid USDT" value={Number(s.total_paid_usdt).toFixed(4)} />
           </div>
         )}
