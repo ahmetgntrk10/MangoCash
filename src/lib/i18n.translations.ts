@@ -59,7 +59,7 @@ export const T: Record<string, any> = {
       submit: "Request Withdrawal", confirmAd: "Watch ad to confirm withdrawal" },
     promo: { enter: "Enter promo code", redeem: "Redeem", needAd: "Watch an ad to validate the code." },
     mining: {
-      title: "Cloud Mining",
+      title: "Mango Mining",
       startMining: "Start Mining",
       tagline: "Mine {{rate}} 🥭 every hour",
       start: "Start Mining",
@@ -742,7 +742,7 @@ export const T: Record<string, any> = {
       submit: "Auszahlung anfordern", confirmAd: "Werbung zur Bestätigung ansehen" },
     promo: { enter: "Promo-Code eingeben", redeem: "Einlösen", needAd: "Werbung zur Validierung ansehen." },
     mining: {
-      title: "Cloud-Mining",
+      title: "Mango-Mining",
       startMining: "Mining starten",
       tagline: "Verdiene {{rate}} 🥭 pro Stunde",
       start: "Starten",
@@ -818,7 +818,7 @@ export const T: Record<string, any> = {
       submit: "Demander un retrait", confirmAd: "Regardez une pub pour confirmer" },
     promo: { enter: "Entrez le code", redeem: "Utiliser", needAd: "Regardez une pub pour valider." },
     mining: {
-      title: "Minage cloud",
+      title: "Minage mango",
       startMining: "Démarrer le minage",
       tagline: "Gagne {{rate}} 🥭 par heure",
       start: "Démarrer",
@@ -894,7 +894,7 @@ export const T: Record<string, any> = {
       submit: "Richiedi prelievo", confirmAd: "Guarda una pubblicità per confermare" },
     promo: { enter: "Inserisci codice", redeem: "Riscatta", needAd: "Guarda una pubblicità per validare." },
     mining: {
-      title: "Mining Cloud",
+      title: "Mining Mango",
       startMining: "Avvia il mining",
       tagline: "Guadagna {{rate}} 🥭 ogni ora",
       start: "Avvia",
