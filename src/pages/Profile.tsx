@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { useUser } from "@/hooks/useUser";
 import { apiCall, requestAdTicket } from "@/lib/api";
-import { openLink, formatUsdt, haptic, CLOUD_TO_USDT } from "@/lib/telegram";
+import { openLink, formatUsdt, haptic, CLOUD_TO_USDT as MANGO_TO_USDT } from "@/lib/telegram";
 import { SUPPORTED_LANGS } from "@/lib/i18n";
 import i18n from "@/lib/i18n";
 import { CHANNELS, WITHDRAW, REF_MIN_FOR_WITHDRAW } from "@/lib/config";
@@ -41,8 +41,8 @@ export default function ProfilePage({ tgId }: { tgId: number | null }) {
 
       <div className="grid grid-cols-2 gap-3">
         <div className="rounded-2xl bg-gradient-card p-4 shadow-elegant">
-          <div className="text-[10px] uppercase text-muted-foreground">CLOUD</div>
-          <div className="mt-1 text-xl font-bold">{user?.balance_cloud ?? 0} ☁️</div>
+          <div className="text-[10px] uppercase text-muted-foreground">MANGO</div>
+          <div className="mt-1 text-xl font-bold">{user?.balance_cloud ?? 0} 🥭</div>
         </div>
         <div className="rounded-2xl bg-gradient-card p-4 shadow-elegant">
           <div className="text-[10px] uppercase text-muted-foreground">USDT</div>
@@ -120,8 +120,8 @@ function NotifyMarketRow({ user }: any) {
     <div className="flex w-full items-center gap-3 border-b border-border px-4 py-3 text-left last:border-0">
       <BellRing className="h-4 w-4 text-primary-glow" />
       <div className="min-w-0 flex-1">
-        <div className="text-sm">Cloud Market Claim Alerts</div>
-        <div className="text-[10px] text-muted-foreground">Get a Telegram DM when your Clouds are ready to claim.</div>
+        <div className="text-sm">Mango Market Claim Alerts</div>
+        <div className="text-[10px] text-muted-foreground">Get a Telegram DM when your Mangos are ready to claim.</div>
       </div>
       <button
         type="button"
@@ -192,7 +192,7 @@ function AddressForm({ user, onClose }: any) {
 function ConvertForm({ user, onClose }: any) {
   const qc = useQueryClient();
   const [amount, setAmount] = useState("");
-  const cloud = Number(amount) || 0;
+  const mango = Number(amount) || 0;
   const usdt = cloud * CLOUD_TO_USDT;
   async function go() {
     if (!user) return;
