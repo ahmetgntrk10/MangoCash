@@ -1,14 +1,14 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Wallet, Gift, Link2, ArrowRightLeft, Send, MapPin, Shield, Loader2, CheckCircle2, Cloud, ChevronRight } from "lucide-react";
+import { Wallet, Gift, Link2, ArrowRightLeft, Send, MapPin, Shield, Loader2, CheckCircle2, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { useUser, useIsAdmin } from "@/hooks/useUser";
 import { apiCall, requestAdTicket } from "@/lib/api";
 import { useQueryClient } from "@tanstack/react-query";
 import { cloudToUsdt, formatUsdt, haptic } from "@/lib/telegram";
-import { DAILY_REWARD_CLOUD, MINING, BIO_REWARD_CLOUD } from "@/lib/config";
+import { DAILY_REWARD_MANGO, MINING, BIO_REWARD_MANGO } from "@/lib/config";
 import { showRewardedChain } from "@/lib/ads/chain";
 import { useAdGate } from "@/components/ads/AdGate";
 import HomeBanner from "@/components/HomeBanner";
@@ -43,7 +43,7 @@ export default function Home({ tgId }: { tgId: number | null }) {
       }
       await apiCall("claim_daily", { ad_ticket_id: ticket });
       haptic("success");
-      toast.success(`+${DAILY_REWARD_CLOUD} ☁️`);
+      toast.success(`+${DAILY_REWARD_MANGO} 🥭`);
       qc.invalidateQueries({ queryKey: ["user", tgId] });
     } catch (e: any) { toast.error(e?.message ?? String(e)); }
     finally { setClaiming(false); }
@@ -55,7 +55,7 @@ export default function Home({ tgId }: { tgId: number | null }) {
     try {
       const r = await apiCall<{ ok: boolean; verified: boolean; reward?: number }>("verify_bio");
       if (r.verified) {
-        if (r.reward && r.reward > 0) toast.success(`${t("profile.bioVerified")} +${r.reward} ☁️`);
+        if (r.reward && r.reward > 0) toast.success(`${t("profile.bioVerified")} +${r.reward} 🥭`);
         else toast.success(t("profile.bioVerified"));
       }
       else toast.error(t("profile.bioMissing"));
