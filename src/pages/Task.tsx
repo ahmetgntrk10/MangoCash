@@ -164,7 +164,7 @@ function AdNetworkCard({
       }
       await apiCall("record_ad_view", { network: net, ad_ticket_id: ticket });
       haptic("success");
-      toast.success(`+${cfg.reward} ☁️`);
+      toast.success(`+${cfg.reward} 🥭`);
       setCooldownUntil(Date.now() + cfg.cooldownMs);
       onWatched();
     } catch (e: any) {
@@ -197,7 +197,7 @@ function AdNetworkCard({
         <div className="flex-1">
           <div className="text-sm font-semibold">{cfg.label}</div>
           <div className="text-[11px] text-muted-foreground">
-            +{cfg.reward} ☁️ · {left} {t("task.slotsLeft")}
+            +{cfg.reward} 🥭 · {left} {t("task.slotsLeft")}
             {remainingCd > 0 && <span className="ml-2 text-warning">· {Math.ceil(remainingCd / 1000)}s</span>}
           </div>
         </div>
@@ -234,7 +234,7 @@ function AdNetworkCard({
                       {done ? (<><CheckCircle2 className="h-3.5 w-3.5" /> {t("task.watched")}</>)
                        : next && busy ? (<Loader2 className="h-3.5 w-3.5 animate-spin" />)
                        : remainingCd > 0 ? (<span className="text-warning">{Math.ceil(remainingCd / 1000)}s</span>)
-                       : (<><Play className="h-3.5 w-3.5" /> {t("task.watchNow")} · +{cfg.reward} ☁️</>)}
+                       : (<><Play className="h-3.5 w-3.5" /> {t("task.watchNow")} · +{cfg.reward} 🥭</>)}
                     </span>
                   </button>
                 );
@@ -338,7 +338,7 @@ function TaskRow({ task, done, tgId, qc }: { task: any; done: boolean; tgId: num
         toast.error(map[res.reason || ""] || t("common.error"));
         return;
       }
-      toast.success(`+${task.reward_cloud} ☁️`);
+      toast.success(`+${task.reward_cloud} 🥭`);
       qc.invalidateQueries({ queryKey: ["tc", tgId] });
       qc.invalidateQueries({ queryKey: ["user", tgId] });
     } catch (e: any) {
@@ -363,7 +363,7 @@ function TaskRow({ task, done, tgId, qc }: { task: any; done: boolean; tgId: num
           <div className="min-w-0">
             <div className="text-sm font-semibold">{task.title}</div>
             {task.description && <div className="mt-0.5 text-xs text-muted-foreground">{task.description}</div>}
-            <div className="mt-2 text-xs text-primary-glow">+{task.reward_cloud} ☁️</div>
+            <div className="mt-2 text-xs text-primary-glow">+{task.reward_cloud} 🥭</div>
           </div>
         </div>
         {done ? (
@@ -479,7 +479,7 @@ function ExclusiveTab({ tgId }: { tgId: number | null }) {
               <Input v={form.channel_username} onChange={(v) => setForm({ ...form, channel_username: v })} ph="Channel @username (no @)" />
               <Input v={form.link} onChange={(v) => setForm({ ...form, link: v })} ph="Join link (https://t.me/...)" />
               <div className="rounded-xl border border-warning/30 bg-warning/10 p-2 text-[11px] text-warning">
-                ⚠ Add our bot <b>@CloudEarnBot</b> as an admin in your channel so we can verify members.
+                ⚠ Add our bot <b>@MangoCashBot</b> as an admin in your channel so we can verify members.
                 If the bot is not added within 2 hours, this task will be automatically removed and your balance will <b>not</b> be refunded.
               </div>
             </>
