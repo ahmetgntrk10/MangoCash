@@ -210,7 +210,7 @@ export const T: Record<string, any> = {
       submit: "निकासी अनुरोध", confirmAd: "निकासी की पुष्टि के लिए विज्ञापन देखें" },
     promo: { enter: "प्रोमो कोड दर्ज करें", redeem: "रिडीम", needAd: "कोड सत्यापित करने हेतु विज्ञापन देखें।" },
     mining: {
-      title: "क्लाउड माइनिंग",
+      title: "मैंगो माइनिंग",
       startMining: "माइनिंग शुरू करें",
       tagline: "हर घंटे {{rate}} 🥭 कमाएं",
       start: "शुरू करें",
@@ -286,7 +286,7 @@ export const T: Record<string, any> = {
       submit: "طلب السحب", confirmAd: "شاهد إعلاناً لتأكيد السحب" },
     promo: { enter: "أدخل الكود الترويجي", redeem: "استخدام", needAd: "شاهد إعلاناً للتحقق من الكود." },
     mining: {
-      title: "تعدين السحابة",
+      title: "مانجو ماينينج",
       startMining: "بدء التعدين",
       tagline: "اكسب {{rate}} 🥭 كل ساعة",
       start: "ابدأ",
