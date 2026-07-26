@@ -970,7 +970,7 @@ export const T: Record<string, any> = {
       submit: "Minta Penarikan", confirmAd: "Tonton iklan untuk konfirmasi" },
     promo: { enter: "Masukkan kode promo", redeem: "Tukar", needAd: "Tonton iklan untuk validasi." },
     mining: {
-      title: "Penambangan Awan",
+      title: "Penambangan Mangga",
       startMining: "Mulai Penambangan",
       tagline: "Dapatkan {{rate}} 🥭 setiap jam",
       start: "Mulai",
@@ -1046,7 +1046,7 @@ export const T: Record<string, any> = {
       submit: "উত্তোলন অনুরোধ", confirmAd: "নিশ্চিত করতে বিজ্ঞাপন দেখুন" },
     promo: { enter: "প্রোমো কোড দিন", redeem: "ব্যবহার", needAd: "কোড যাচাইতে বিজ্ঞাপন দেখুন।" },
     mining: {
-      title: "ক্লাউড মাইনিং",
+      title: "আম মাইনিং",
       startMining: "মাইনিং শুরু করুন",
       tagline: "প্রতি ঘণ্টায় {{rate}} 🥭 উপার্জন করুন",
       start: "শুরু করুন",
@@ -1274,7 +1274,7 @@ export const T: Record<string, any> = {
       submit: "Yêu cầu rút", confirmAd: "Xem quảng cáo để xác nhận" },
     promo: { enter: "Nhập mã", redeem: "Đổi", needAd: "Xem quảng cáo để xác minh mã." },
     mining: {
-      title: "Khai thác đám mây",
+      title: "Khai thác Xoài",
       startMining: "Bắt đầu khai thác",
       tagline: "Kiếm {{rate}} 🥭 mỗi giờ",
       start: "Bắt đầu",
