@@ -207,7 +207,7 @@ function ConvertForm({ user, onClose }: any) {
     <div className="space-y-3">
       <h3 className="font-display text-base font-bold">Convert 🥭 → USDT</h3>
       <div className="text-xs text-muted-foreground">Rate: 1 🥭 = {MANGO_TO_USDT} USDT • Balance: {user?.balance_cloud ?? 0} 🥭</div>
-      <input type="number" className="w-full rounded-xl border border-border bg-surface-2/60 px-3 py-2 text-sm outline-none focus:border-primary" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="Amount in ☁️" />
+      <input type="number" className="w-full rounded-xl border border-border bg-surface-2/60 px-3 py-2 text-sm outline-none focus:border-primary" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="Amount in 🥭" />
       <div className="text-sm text-earn">= {formatUsdt(usdt)} USDT</div>
       <button onClick={go} className="w-full rounded-xl bg-gradient-primary py-2.5 text-sm font-semibold text-primary-foreground">Convert</button>
     </div>
@@ -347,7 +347,7 @@ function HistoryView({ tgId }: { tgId: number | null }) {
         {items.map((it, i) => (
           <div key={i} className="rounded-xl border border-border bg-surface-1/40 p-3 text-xs">
             <div className="flex justify-between">
-              <span className="font-semibold">{it.kind === "withdraw" ? `Withdraw ${it.method?.toUpperCase()}` : "Convert ☁️→USDT"}</span>
+              <span className="font-semibold">{it.kind === "withdraw" ? `Withdraw ${it.method?.toUpperCase()}` : "Convert 🥭→USDT"}</span>
               <span className="text-muted-foreground">{new Date(it.created_at).toLocaleString()}</span>
             </div>
             <div className="mt-1 text-primary-glow">
