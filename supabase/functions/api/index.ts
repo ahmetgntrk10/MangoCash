@@ -29,7 +29,7 @@ const REF_BONUS_MINING = 300;
 const REF_BONUS_DAY = 500;
 const REF_BONUS_DAILY_ADS_REQUIRED = 10;
 
-// ─── Cloud Market ────────────────────────────────────────────
+// ─── Mango Market ────────────────────────────────────────────
 // Server is source of truth for product prices/rates. Any drift with the
 // client `CLOUD_MARKET` array is corrected against this table.
 const MARKET_PRODUCTS: Record<string, { cost: number; hourlyRate: number; adsRequired: number }> = {
