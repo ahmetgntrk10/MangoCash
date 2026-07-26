@@ -206,7 +206,7 @@ for (const { code } of SUPPORTED_LANGS) {
 
 const tg = (window as any).Telegram?.WebApp;
 const initialLang =
-  localStorage.getItem("cloudearn_lang") ||
+  localStorage.getItem("mangocash_lang") ||
   tg?.initDataUnsafe?.user?.language_code ||
   "en";
 
