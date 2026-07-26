@@ -17,7 +17,7 @@ export default function Layout({ tgId: _tgId }: { tgId: number | null }) {
 
   return (
     <div className="relative min-h-screen text-foreground">
-      <main className="mx-auto max-w-md px-4 pb-28 pt-6">
+      <main className="mx-auto max-w-md px-4 pb-28 pt-6 animate-page-enter">
         <Outlet />
       </main>
 
