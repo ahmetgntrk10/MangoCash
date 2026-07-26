@@ -190,3 +190,80 @@
 [data-sonner-toaster] [data-sonner-toast][data-type="error"] {
   border-color: rgba(255, 92, 122, 0.5) !important;
 }
+
+/* ─── MangoCash Animations ─── */
+
+/* Mango float — ana ekrandaki 🥭 ikonu yüzer */
+@keyframes mango-float {
+  0%, 100% { transform: translateY(0px) rotate(-2deg); }
+  50%       { transform: translateY(-10px) rotate(2deg); }
+}
+.animate-mango-float {
+  animation: mango-float 3s ease-in-out infinite;
+}
+
+/* Kazanç efekti — +N 🥭 yukarı uçar */
+@keyframes earn-fly {
+  0%   { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-60px) scale(1.4); }
+}
+.animate-earn-fly {
+  animation: earn-fly 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Bakiye artış — sayı parlayıp büyür */
+@keyframes balance-pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.18); color: #FFD700; }
+  100% { transform: scale(1); }
+}
+.animate-balance-pop {
+  animation: balance-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Tap efekti — tıklayınca küçülür */
+@keyframes tap-bounce {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(0.88); }
+  100% { transform: scale(1); }
+}
+.animate-tap-bounce {
+  animation: tap-bounce 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Buton glow — primary butonlarda */
+@keyframes btn-glow {
+  0%, 100% { box-shadow: 0 0 12px rgba(255, 140, 0, 0.4); }
+  50%       { box-shadow: 0 0 28px rgba(255, 140, 0, 0.8); }
+}
+.animate-btn-glow {
+  animation: btn-glow 2s ease-in-out infinite;
+}
+
+/* Sayfa geçişi — fade + slide */
+@keyframes page-enter {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-page-enter {
+  animation: page-enter 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Pulse glow — mining aktifken */
+@keyframes mango-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(255, 140, 0, 0.3); }
+  50%       { box-shadow: 0 0 50px rgba(255, 179, 71, 0.7); }
+}
+.animate-mango-pulse {
+  animation: mango-pulse 2s ease-in-out infinite;
+}
+
+/* Particle burst — tap yapınca parçacık */
+@keyframes particle {
+  0%   { opacity: 1; transform: translate(0, 0) scale(1); }
+  100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0); }
+}
+.animate-particle {
+  animation: particle 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
