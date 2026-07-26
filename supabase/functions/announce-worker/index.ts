@@ -1,4 +1,4 @@
-// CloudEarn announce worker.
+// MangoCash announce worker.
 // Picks the next 'draft' announcement, sends it to all eligible users in
 // batches respecting Telegram rate limits. Re-invoke (cron) until status='sent'.
 //
