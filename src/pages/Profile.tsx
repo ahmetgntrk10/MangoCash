@@ -353,7 +353,7 @@ function HistoryView({ tgId }: { tgId: number | null }) {
             <div className="mt-1 text-primary-glow">
               {it.kind === "withdraw"
                 ? `${formatUsdt(Number(it.amount_usdt))} USDT (${it.status})`
-                : `${it.cloud_amount} ☁️ → ${formatUsdt(Number(it.usdt_amount))} USDT`}
+                : `${it.cloud_amount} 🥭 → ${formatUsdt(Number(it.usdt_amount))} USDT`}
             </div>
           </div>
         ))}
@@ -447,7 +447,7 @@ function LangPicker({ onClose }: any) {
   const qc = useQueryClient();
   async function pick(code: string) {
     i18n.changeLanguage(code);
-    localStorage.setItem("cloudearn_lang", code);
+    localStorage.setItem("mangocash_lang", code);
     try { await apiCall("update_profile", { language_code: code }); } catch { /* offline-safe */ }
     qc.invalidateQueries({ queryKey: ["user"] });
     onClose();
