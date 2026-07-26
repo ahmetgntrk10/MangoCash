@@ -64,8 +64,8 @@ export default function Home({ tgId }: { tgId: number | null }) {
     finally { setBioBusy(false); }
   }
 
-  const cloud = user?.balance_cloud ?? 0;
-  const usdt = cloudToUsdt(cloud);
+  const mango = user?.balance_cloud ?? 0;
+  const usdt = cloudToUsdt(mango);
 
   return (
     <div className="space-y-4">
@@ -90,8 +90,8 @@ export default function Home({ tgId }: { tgId: number | null }) {
           <Wallet className="h-3.5 w-3.5" /> {t("common.balance")}
         </div>
         <div className="relative mt-3 flex items-baseline gap-2">
-          <span className="font-display text-5xl font-bold tabular-nums text-foreground">{cloud.toLocaleString()}</span>
-          <span className="text-2xl">☁️</span>
+          <span className="font-display text-5xl font-bold tabular-nums text-foreground">{mango.toLocaleString()}</span>
+          <span className="text-2xl">🥭</span>
         </div>
         <div className="relative mt-1 text-sm text-muted-foreground">≈ {formatUsdt(usdt)} USDT</div>
       </motion.div>
@@ -108,7 +108,7 @@ export default function Home({ tgId }: { tgId: number | null }) {
           <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
           <Gift className="h-5 w-5 text-warning" />
           <div className="mt-2 text-sm font-semibold">{t("common.dailyReward")}</div>
-          <div className="mt-0.5 text-xs text-primary-glow">+{DAILY_REWARD_CLOUD} ☁️</div>
+          <div className="mt-0.5 text-xs text-primary-glow">+{DAILY_REWARD_MANGO} 🥭</div>
           {claiming && <Loader2 className="absolute right-3 top-3 h-4 w-4 animate-spin text-primary" />}
           {!canClaim && <div className="mt-0.5 text-[10px] text-muted-foreground">24h</div>}
         </motion.button>
@@ -149,7 +149,7 @@ export default function Home({ tgId }: { tgId: number | null }) {
             transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
             className="grid h-14 w-14 place-items-center rounded-2xl bg-gradient-primary text-primary-foreground shadow-glow"
           >
-            <Cloud className="h-7 w-7" />
+            <span className="text-2xl">🥭</span>
           </motion.div>
           <div className="min-w-0 flex-1">
             <div className="font-display text-lg font-bold">{t("mining.startMining")}</div>
@@ -162,7 +162,7 @@ export default function Home({ tgId }: { tgId: number | null }) {
       </motion.button>
       {!(user as any)?.bio_reward_claimed && (
         <div className="rounded-xl bg-surface-1/40 px-3 py-2 text-[10px] text-muted-foreground">
-          {t("profile.bioOnceReward", { n: BIO_REWARD_CLOUD })}
+          {t("profile.bioOnceReward", { n: BIO_REWARD_MANGO })}
         </div>
       )}
     </div>
