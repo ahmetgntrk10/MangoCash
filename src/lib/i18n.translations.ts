@@ -362,7 +362,7 @@ export const T: Record<string, any> = {
       submit: "Запросить вывод", confirmAd: "Посмотрите рекламу для подтверждения" },
     promo: { enter: "Введите промокод", redeem: "Активировать", needAd: "Посмотрите рекламу для проверки кода." },
     mining: {
-      title: "Облачный майнинг",
+      title: "Манго Майнинг",
       startMining: "Начать майнинг",
       tagline: "Зарабатывай {{rate}} 🥭 каждый час",
       start: "Начать",
@@ -438,7 +438,7 @@ export const T: Record<string, any> = {
       submit: "Solicitar retiro", confirmAd: "Mira un anuncio para confirmar" },
     promo: { enter: "Introduce código", redeem: "Canjear", needAd: "Mira un anuncio para validar el código." },
     mining: {
-      title: "Minería en la nube",
+      title: "Minería Mango",
       startMining: "Iniciar minería",
       tagline: "Gana {{rate}} 🥭 cada hora",
       start: "Iniciar",
@@ -514,7 +514,7 @@ export const T: Record<string, any> = {
       submit: "申请提现", confirmAd: "观看广告确认提现" },
     promo: { enter: "输入兑换码", redeem: "兑换", needAd: "观看广告以验证兑换码。" },
     mining: {
-      title: "云挖矿",
+      title: "芒果挖矿",
       startMining: "开始挖矿",
       tagline: "每小时赚取 {{rate}} 🥭",
       start: "开始",
