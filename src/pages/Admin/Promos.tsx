@@ -17,7 +17,7 @@ const COND_LABELS: Record<string, string> = {
   mining_claim_today: "Claim mining N× today",
   channel_member: "Join channel/group",
   min_referrals: "Have N referrals",
-  min_balance_cloud: "Hold N ☁️ balance",
+  min_balance_cloud: "Hold N 🥭 balance",
   bio_verified: "Link-in-Bio verified",
 };
 
@@ -81,7 +81,7 @@ export default function AdminPromos() {
             <In label="Reward Amount" v={form.reward_amount} on={(v) => setForm({ ...form, reward_amount: v })} />
             <div><div className="mb-1 text-[10px] uppercase text-white/40">Type</div>
               <select value={form.reward_type} onChange={(e) => setForm({ ...form, reward_type: e.target.value })} className="w-full rounded-xl bg-white/10 px-3 py-2 text-sm outline-none">
-                <option value="usdt" className="bg-[#141a30]">USDT</option><option value="cloud" className="bg-[#141a30]">☁️</option>
+                <option value="usdt" className="bg-[#141a30]">USDT</option><option value="cloud" className="bg-[#141a30]">🥭</option>
               </select></div>
           </div>
           <In label="Max completions (optional)" v={form.max_completions} on={(v) => setForm({ ...form, max_completions: v })} />
