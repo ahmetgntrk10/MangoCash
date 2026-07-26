@@ -1,4 +1,4 @@
-// CloudEarn FaucetPay payout worker (hardened 2026-07-07).
+// MangoCash FaucetPay payout worker (hardened 2026-07-07).
 // - Insufficient FaucetPay balance: keep status='pending' for retry.
 // - Invalid / unverified FaucetPay email: refund, status='rejected', DM user with reason.
 // - Success: status='paid', post channel + DM user.
@@ -55,7 +55,7 @@ async function postSuccessToChannel(wd: any, payoutId: string) {
     `👤 *User:* \`${wd.user_tg_id}\``,
     `🧾 *Payout ID:* \`${md(payoutId)}\``,
     "",
-    "Thank you for using CloudEarn \\! 🎉",
+    "Thank you for using MangoCash \\! 🎉",
   ].join("\n");
   await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
     method: "POST",
@@ -193,7 +193,7 @@ Deno.serve(async (req) => {
           `💰 *Amount:* ${md(formatNum(Number(row.amount_net_usdt ?? row.amount_usdt)))} USDT`,
           "📝 *Method:* FaucetPay",
           `🧾 *Payout ID:* \`${md(result.payoutId)}\``, "",
-          "Thank you for using CloudEarn \\! 🎉",
+          "Thank you for using MangoCash \\! 🎉",
         ].join("\n"));
         processed += 1;
       } else if (result.kind === "insufficient_funds") {
