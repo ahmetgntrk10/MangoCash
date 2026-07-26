@@ -131,7 +131,7 @@ function Card({ it, method, setStatus, busy }: { it: any; method: "faucetpay" | 
             {it.users?.country ?? "—"} • {new Date(it.created_at).toLocaleString()}
           </div>
           <div className="mt-1 flex gap-2 text-[10px] text-muted-foreground">
-            <span>Cloud: <span className="text-foreground">{Number(it.users?.balance_cloud ?? 0).toLocaleString()}</span></span>
+            <span>Mango: <span className="text-foreground">{Number(it.users?.balance_cloud ?? 0).toLocaleString()}</span></span>
             <span>·</span>
             <span>USDT: <span className="text-foreground">{formatUsdt(Number(it.users?.balance_usdt ?? 0))}</span></span>
           </div>
