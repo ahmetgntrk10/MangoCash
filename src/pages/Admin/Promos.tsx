@@ -96,7 +96,7 @@ export default function AdminPromos() {
             <div className="flex items-start justify-between">
               <div>
                 <div className="font-mono text-sm font-bold">{p.code}</div>
-                <div className="text-[10px] text-white/40">+{p.reward_amount} {p.reward_type === "usdt" ? "USDT" : "☁️"} • used {p.completions_count}/{p.max_completions ?? "∞"}</div>
+                <div className="text-[10px] text-white/40">+{p.reward_amount} {p.reward_type === "usdt" ? "USDT" : "🥭"} • used {p.completions_count}/{p.max_completions ?? "∞"}</div>
                 {p.expires_at && <div className="text-[10px] text-white/40">exp: {new Date(p.expires_at).toLocaleDateString()}</div>}
                 {Array.isArray(p.conditions) && p.conditions.length > 0 && (
                   <div className="mt-1 text-[10px] text-sky-300/80">+{p.conditions.length} condition{p.conditions.length > 1 ? "s" : ""}</div>
