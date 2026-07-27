@@ -636,43 +636,38 @@ Deno.serve(async (req) => {
         await onAdWatched(supabase, tgId);
         await commissionToReferrer(supabase, u.referred_by, tgId, reward, "ad_" + network);
 
-        // Ref-bonus: Adsgram click-verified ads count toward Day1/2/3 bundles.
+        // Ref-bonus: Adsgram click-verified ads count toward the 10-day bonus pool (non-consecutive OK).
         if (network === "adsgram" && u.referred_by) {
           try {
             const todayKey = new Date().toISOString().slice(0, 10);
             const { data: rp } = await supabase.from("referral_bonus_progress")
               .select("*").eq("referee_tg_id", tgId).maybeSingle();
-            if (rp && rp.referrer_tg_id) {
-              const slotIndex = !rp.day1_credited ? 1 : !rp.day2_credited ? 2 : !rp.day3_credited ? 3 : 0;
-              if (slotIndex > 0) {
-                const dayKey = `day${slotIndex}_date` as const;
-                const cntKey = `day${slotIndex}_ads` as const;
-                const doneKey = `day${slotIndex}_credited` as const;
-                const activeDate = (rp as any)[dayKey] as string | null;
-                let currentCount = Number((rp as any)[cntKey] ?? 0);
-                const patch: any = {};
-                if (activeDate !== todayKey) {
-                  patch[dayKey] = todayKey; currentCount = 1;
-                } else {
-                  currentCount += 1;
-                }
-                patch[cntKey] = currentCount;
-                if (currentCount >= REF_BONUS_DAILY_ADS_REQUIRED) {
-                  patch[doneKey] = true;
-                  patch[`day${slotIndex}_credited_at`] = new Date().toISOString();
-                  const { data: refU } = await supabase.from("users")
-                    .select("balance_cloud,total_earned_cloud")
-                    .eq("tg_id", rp.referrer_tg_id).maybeSingle();
-                  if (refU) {
-                    await supabase.from("users").update({
-                      balance_cloud: Number(refU.balance_cloud) + REF_BONUS_DAY,
-                      total_earned_cloud: Number(refU.total_earned_cloud) + REF_BONUS_DAY,
-                    }).eq("tg_id", rp.referrer_tg_id);
-                  }
-                }
-                await supabase.from("referral_bonus_progress")
-                  .update(patch).eq("referee_tg_id", tgId);
+            if (rp && rp.referrer_tg_id && Number(rp.days_completed ?? 0) < REF_BONUS_DAYS_REQUIRED) {
+              const activeDate = rp.current_day_date as string | null;
+              let currentCount = Number(rp.current_day_ads ?? 0);
+              if (activeDate !== todayKey) {
+                // New UTC day: yesterday's incomplete count (below 10) is lost, no penalty beyond that.
+                currentCount = 1;
+              } else {
+                currentCount += 1;
               }
+              const patch: any = { current_day_date: todayKey, current_day_ads: currentCount };
+              if (currentCount >= REF_BONUS_DAILY_ADS_REQUIRED) {
+                patch.days_completed = Number(rp.days_completed ?? 0) + 1;
+                patch.current_day_ads = 0;
+                patch.current_day_date = null;
+                const { data: refU } = await supabase.from("users")
+                  .select("balance_cloud,total_earned_cloud")
+                  .eq("tg_id", rp.referrer_tg_id).maybeSingle();
+                if (refU) {
+                  await supabase.from("users").update({
+                    balance_cloud: Number(refU.balance_cloud) + REF_BONUS_DAY,
+                    total_earned_cloud: Number(refU.total_earned_cloud) + REF_BONUS_DAY,
+                  }).eq("tg_id", rp.referrer_tg_id);
+                }
+              }
+              await supabase.from("referral_bonus_progress")
+                .update(patch).eq("referee_tg_id", tgId);
             }
           } catch (e) { console.error("ref-bonus ad", e); }
         }
