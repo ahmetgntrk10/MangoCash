@@ -1,13 +1,13 @@
 import type { AdResult } from "./types";
 
-declare global { interface Window { show_11187835?: (opts?: any) => Promise<void>; } }
+declare global { interface Window { show_11434716?: (opts?: any) => Promise<void>; } }
 
 export async function showMonetagRewarded(): Promise<AdResult> {
-  if (typeof window.show_11187835 !== "function") {
+  if (typeof window.show_11434716 !== "function") {
     return { ok: false, reason: "no-fill", message: "Monetag SDK not loaded" };
   }
   try {
-    await window.show_11187835();
+    await window.show_11434716;
     return { ok: true };
   } catch (e: any) {
     const msg = String(e?.message || e || "").toLowerCase();
