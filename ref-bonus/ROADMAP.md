@@ -191,8 +191,9 @@ alter table public.referral_bonus_progress enable row level security;
 grant select on public.referral_bonus_progress to authenticated;
 grant all    on public.referral_bonus_progress to service_role;
 ```
+
 ikinci çalıştırılması gereken SQL
-'''
+'''sql
 ALTER TABLE public.referral_bonus_progress
   ADD COLUMN IF NOT EXISTS signup_bonus_credited boolean NOT NULL DEFAULT false,
   ADD COLUMN IF NOT EXISTS signup_bonus_credited_at timestamptz,
