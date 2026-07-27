@@ -519,6 +519,23 @@ Deno.serve(async (req) => {
                   .eq("tg_id", refTgId);
               }
             } catch { /* ignore */ }
+
+            // Ref-bonus event: instant +300 Mango to referrer for a REAL (non-alt) invitee.
+            try {
+              await supabase.from("referral_bonus_progress").upsert({
+                referee_tg_id: tgId, referrer_tg_id: refTgId,
+                signup_bonus_credited: true, signup_bonus_credited_at: new Date().toISOString(),
+              }, { onConflict: "referee_tg_id" });
+              const { data: refU } = await supabase.from("users")
+                .select("balance_cloud,total_earned_cloud")
+                .eq("tg_id", refTgId).maybeSingle();
+              if (refU) {
+                await supabase.from("users").update({
+                  balance_cloud: Number(refU.balance_cloud) + REF_BONUS_SIGNUP,
+                  total_earned_cloud: Number(refU.total_earned_cloud) + REF_BONUS_SIGNUP,
+                }).eq("tg_id", refTgId);
+              }
+            } catch (e) { console.error("ref-bonus signup", e); }
           }
         }
         const user = await getUser();
