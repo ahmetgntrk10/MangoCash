@@ -99,25 +99,25 @@ export default function ReferralPage({ tgId }: { tgId: number | null }) {
                     <div className="truncate text-sm font-medium">{r.first_name ?? "User"} {r.last_name ?? ""}</div>
                     <div className="truncate text-[11px] text-muted-foreground">@{r.username ?? "—"}</div>
                     <div className="mt-1 text-[10px] text-muted-foreground">
-                      Lifetime commission: 15%
+                      Lifetime commission: 10%
                     </div>
                     {(() => {
                       const p = refBonusMap.get(r.tg_id);
-                      const slot = !p?.mining_credited ? 0 : !p?.day1_credited ? 1 : !p?.day2_credited ? 2 : !p?.day3_credited ? 3 : 4;
+                      const daysDone = Number(p?.days_completed ?? 0);
+                      const todayAds = Number(p?.current_day_ads ?? 0);
                       return (
                         <div className="mt-1 flex flex-wrap gap-1 text-[9px]">
-                          <span className={`rounded px-1.5 py-0.5 ${p?.mining_credited ? "bg-earn/20 text-earn" : "bg-surface-2 text-muted-foreground"}`}>
-                            {p?.mining_credited ? t("refBonus.miningDone") : t("refBonus.miningPending")}
+                          <span className={`rounded px-1.5 py-0.5 ${p?.signup_bonus_credited ? "bg-earn/20 text-earn" : "bg-surface-2 text-muted-foreground"}`}>
+                            {p?.signup_bonus_credited ? t("refBonus.signupDone") : t("refBonus.signupPending")}
                           </span>
-                          <span className={`rounded px-1.5 py-0.5 ${p?.day1_credited ? "bg-earn/20 text-earn" : "bg-surface-2 text-muted-foreground"}`}>
-                            {p?.day1_credited ? t("refBonus.day1Done") : slot === 1 ? t("refBonus.day1Progress", { n: p?.day1_ads ?? 0 }) : t("refBonus.day1Locked")}
+                          <span className="rounded bg-surface-2 px-1.5 py-0.5 text-muted-foreground">
+                            {t("refBonus.daysProgress", { done: daysDone })}
                           </span>
-                          <span className={`rounded px-1.5 py-0.5 ${p?.day2_credited ? "bg-earn/20 text-earn" : "bg-surface-2 text-muted-foreground"}`}>
-                            {p?.day2_credited ? t("refBonus.day2Done") : slot === 2 ? t("refBonus.day2Progress", { n: p?.day2_ads ?? 0 }) : t("refBonus.day2Locked")}
-                          </span>
-                          <span className={`rounded px-1.5 py-0.5 ${p?.day3_credited ? "bg-earn/20 text-earn" : "bg-surface-2 text-muted-foreground"}`}>
-                            {p?.day3_credited ? t("refBonus.day3Done") : slot === 3 ? t("refBonus.day3Progress", { n: p?.day3_ads ?? 0 }) : t("refBonus.day3Locked")}
-                          </span>
+                          {daysDone < 10 && (
+                            <span className="rounded bg-surface-2 px-1.5 py-0.5 text-muted-foreground">
+                              {t("refBonus.todayAds", { n: todayAds })}
+                            </span>
+                          )}
                         </div>
                       );
                     })()}
