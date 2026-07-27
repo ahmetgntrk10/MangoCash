@@ -77,12 +77,5 @@ async function showInterstitial(): Promise<AdResult> {
 export async function showRichAdsRandom(): Promise<AdResult> {
   // small delay so the user perceives a deliberate "load" before being sent
   await new Promise((r) => setTimeout(r, 2000));
-  if (Math.random() < 0.5) {
-    const r = await showNative();
-    if (r.ok || r.reason !== "no-fill") return r;
-    return showInterstitial();
-  }
-  const r = await showInterstitial();
-  if (r.ok || r.reason !== "no-fill") return r;
-  return showNative();
+  return showInterstitial();
 }
