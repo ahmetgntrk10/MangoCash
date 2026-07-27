@@ -14,7 +14,7 @@ const BOT_USERNAME = (Deno.env.get("BOT_USERNAME") || "MangoCashBot").replace(/^
 const APP_START_LINK = Deno.env.get("APP_START_LINK")
   || `https://t.me/${BOT_USERNAME}/earn?startapp=5640381390`;
 
-const REF_COMMISSION_PCT = 15;
+const REF_COMMISSION_PCT = 10;
 const DAILY_REWARD = 80;
 const BANNER_VIEW_WINDOW_MS = 12 * 60 * 60 * 1000;
 const BANNER_DISMISS_HIDE_MS = 12 * 60 * 60 * 1000;
@@ -25,8 +25,9 @@ const MINING_RATE_PER_HOUR = 50;
 const MINING_BASE_HOURS = 1;
 const MINING_MAX_HOURS = 6;
 const MINING_CHANNEL = (Deno.env.get("MINING_CHANNEL") || "mangocashnews").replace(/^@/, "");
-const REF_BONUS_MINING = 300;
-const REF_BONUS_DAY = 500;
+const REF_BONUS_SIGNUP = 300;
+const REF_BONUS_DAY = 300;
+const REF_BONUS_DAYS_REQUIRED = 10;
 const REF_BONUS_DAILY_ADS_REQUIRED = 10;
 
 // ─── Mango Market ────────────────────────────────────────────
