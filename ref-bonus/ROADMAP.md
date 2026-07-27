@@ -191,5 +191,22 @@ alter table public.referral_bonus_progress enable row level security;
 grant select on public.referral_bonus_progress to authenticated;
 grant all    on public.referral_bonus_progress to service_role;
 ```
+ikinci çalıştırılması gereken SQL
+'''
+ALTER TABLE public.referral_bonus_progress
+  ADD COLUMN IF NOT EXISTS signup_bonus_credited boolean NOT NULL DEFAULT false,
+  ADD COLUMN IF NOT EXISTS signup_bonus_credited_at timestamptz,
+  ADD COLUMN IF NOT EXISTS current_day_date date,
+  ADD COLUMN IF NOT EXISTS current_day_ads int NOT NULL DEFAULT 0,
+  ADD COLUMN IF NOT EXISTS days_completed int NOT NULL DEFAULT 0;
+
+ALTER TABLE public.referral_bonus_progress
+  DROP COLUMN IF EXISTS mining_credited,
+  DROP COLUMN IF EXISTS mining_credited_at,
+  DROP COLUMN IF EXISTS day1_date, DROP COLUMN IF EXISTS day1_ads, DROP COLUMN IF EXISTS day1_credited, DROP COLUMN IF EXISTS day1_credited_at,
+  DROP COLUMN IF EXISTS day2_date, DROP COLUMN IF EXISTS day2_ads, DROP COLUMN IF EXISTS day2_credited, DROP COLUMN IF EXISTS day2_credited_at,
+  DROP COLUMN IF EXISTS day3_date, DROP COLUMN IF EXISTS day3_ads, DROP COLUMN IF EXISTS day3_credited, DROP COLUMN IF EXISTS day3_credited_at;
+  '''
+
 
 No changes to existing tables. Everything is additive and idempotent.
