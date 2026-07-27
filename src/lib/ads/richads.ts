@@ -13,7 +13,7 @@ function ensureInit() {
   if (typeof Ctor !== "function") return false;
   try {
     window.TelegramAdsController = new Ctor();
-    window.TelegramAdsController.initialize({ pubId: "1006008", appId: "7864" });
+    window.TelegramAdsController.initialize({ pubId: "1006008", appId: "8243" });
     window.__richadsInited = true;
     return true;
   } catch { return false; }
