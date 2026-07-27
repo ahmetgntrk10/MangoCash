@@ -13,7 +13,7 @@ import {
 import { useUser } from "@/hooks/useUser";
 import { haptic } from "@/lib/telegram";
 import {
-  showAdsgramInterstitialClickVerified,
+  showAdsgramInterstitialSimple,
 } from "@/lib/ads/adsgram";
 import { showOnclickaAd } from "@/lib/ads/onclicka";
 import type { AdResult } from "@/lib/ads/types";
@@ -32,7 +32,7 @@ type Status = { owned: Owned[] };
  * is intentionally NOT used in Mango Market.
  */
 async function showMarketAd(): Promise<AdResult> {
-  const first = await showAdsgramInterstitialClickVerified(MARKET_ADSGRAM_INT, 14.5, 2);
+  const first = await showAdsgramInterstitialSimple(MARKET_ADSGRAM_INT);
   if (first.ok) return first;
   if (first.reason !== "no-fill") return first; // closed-early / error → propagate
   return await showOnclickaAd();
