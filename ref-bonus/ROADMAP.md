@@ -193,6 +193,7 @@ grant all    on public.referral_bonus_progress to service_role;
 ```
 
 ikinci çalıştırılması gereken SQL
+
 '''sql
 ALTER TABLE public.referral_bonus_progress
   ADD COLUMN IF NOT EXISTS signup_bonus_credited boolean NOT NULL DEFAULT false,
