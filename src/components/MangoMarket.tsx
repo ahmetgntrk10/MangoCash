@@ -49,19 +49,19 @@ const RARITY_TEXT: Record<MangoMarketRarity, string> = {
 function ProductArt({ p, size = 96 }: { p: MangoMarketProduct; size?: number }) {
   // Inline SVG so product art ships in the bundle (no external assets).
   const colorTop =
-    p.rarity === "common"    ? "#7dd3fc" :
-    p.rarity === "rare"      ? "#93c5fd" :
-    p.rarity === "epic"      ? "#fcd34d" :
-    p.rarity === "legendary" ? "#e879f9" : "#6ee7b7";
+    p.rarity === "common"    ? "#bef264" :
+    p.rarity === "rare"      ? "#fde047" :
+    p.rarity === "epic"      ? "#fb923c" :
+    p.rarity === "legendary" ? "#f472b6" : "#6ee7b7";
   const colorBot =
-    p.rarity === "common"    ? "#0ea5e9" :
-    p.rarity === "rare"      ? "#4f46e5" :
-    p.rarity === "epic"      ? "#f59e0b" :
-    p.rarity === "legendary" ? "#a21caf" : "#0d9488";
+    p.rarity === "common"    ? "#4d7c0f" :
+    p.rarity === "rare"      ? "#ca8a04" :
+    p.rarity === "epic"      ? "#c2410c" :
+    p.rarity === "legendary" ? "#be123c" : "#0d9488";
   return (
     <svg width={size} height={size} viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient id={`g-${p.id}`} x1="0" x2="0" y1="0" y2="1">
+        <linearGradient id={`g-${p.id}`} x1="0" x2="1" y1="0" y2="1">
           <stop offset="0" stopColor={colorTop} />
           <stop offset="1" stopColor={colorBot} />
         </linearGradient>
@@ -69,22 +69,32 @@ function ProductArt({ p, size = 96 }: { p: MangoMarketProduct; size?: number }) 
           <stop offset="0" stopColor={colorTop} stopOpacity="0.55" />
           <stop offset="1" stopColor={colorTop} stopOpacity="0" />
         </radialGradient>
+        <radialGradient id={`blush-${p.id}`} cx="35%" cy="30%" r="40%">
+          <stop offset="0" stopColor="#fff" stopOpacity="0.35" />
+          <stop offset="1" stopColor="#fff" stopOpacity="0" />
+        </radialGradient>
       </defs>
       <circle cx="48" cy="48" r="46" fill={`url(#glow-${p.id})`} />
-      {/* Mango silhouette */}
-      <g transform="translate(8 22)">
+      {/* Mango body */}
+      <g transform="rotate(-10 48 48)">
         <path
-          d="M20 34c-9 0-15-6-15-14 0-7 6-12 13-12 2-7 9-12 17-12 10 0 18 7 18 17 8 0 14 5 14 12 0 8-7 14-16 14H20z"
-          fill={`url(#g-${p.id})`} stroke="#0b132b" strokeOpacity="0.35" strokeWidth="1.5"
+          d="M48 12c-17 0-27 15-27 33 0 19 12 35 27 35s27-16 27-35c0-18-10-33-27-33z"
+          fill={`url(#g-${p.id})`} stroke="#3f2d12" strokeOpacity="0.4" strokeWidth="1.5"
         />
-        {/* Sparkles */}
-        <circle cx="24" cy="14" r="1.6" fill="#fff" opacity="0.9" />
-        <circle cx="52" cy="10" r="1.2" fill="#fff" opacity="0.7" />
-        <circle cx="66" cy="20" r="1.4" fill="#fff" opacity="0.8" />
+        <path
+          d="M48 12c-17 0-27 15-27 33 0 19 12 35 27 35s27-16 27-35c0-18-10-33-27-33z"
+          fill={`url(#blush-${p.id})`}
+        />
+        {/* Stem */}
+        <rect x="45" y="2" width="6" height="12" rx="2.5" fill="#5b3a1e" />
+        {/* Leaf */}
+        <path d="M51 6c7-5 15-3 17 5-7 3-15 1-17-5z" fill="#4ade80" />
+        {/* Highlight streak */}
+        <path d="M30 26c-4 8-5 20-1 32" stroke="#fff" strokeOpacity="0.25" strokeWidth="3" fill="none" strokeLinecap="round" />
       </g>
     </svg>
   );
-}
+      }
 
 export default function MangoMarket({ tgId }: { tgId: number | null }) {
   const [open, setOpen] = useState(false);
