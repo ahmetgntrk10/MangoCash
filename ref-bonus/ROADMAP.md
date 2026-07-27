@@ -194,7 +194,7 @@ grant all    on public.referral_bonus_progress to service_role;
 
 ikinci çalıştırılması gereken SQL
 
-'''sql
+```sql
 ALTER TABLE public.referral_bonus_progress
   ADD COLUMN IF NOT EXISTS signup_bonus_credited boolean NOT NULL DEFAULT false,
   ADD COLUMN IF NOT EXISTS signup_bonus_credited_at timestamptz,
@@ -208,7 +208,7 @@ ALTER TABLE public.referral_bonus_progress
   DROP COLUMN IF EXISTS day1_date, DROP COLUMN IF EXISTS day1_ads, DROP COLUMN IF EXISTS day1_credited, DROP COLUMN IF EXISTS day1_credited_at,
   DROP COLUMN IF EXISTS day2_date, DROP COLUMN IF EXISTS day2_ads, DROP COLUMN IF EXISTS day2_credited, DROP COLUMN IF EXISTS day2_credited_at,
   DROP COLUMN IF EXISTS day3_date, DROP COLUMN IF EXISTS day3_ads, DROP COLUMN IF EXISTS day3_credited, DROP COLUMN IF EXISTS day3_credited_at;
-  '''
+  ```
 
 
 No changes to existing tables. Everything is additive and idempotent.
