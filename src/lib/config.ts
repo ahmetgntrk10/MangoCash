@@ -40,7 +40,7 @@ export const PROMO_AD_BLOCK_INTERSTITIAL = (import.meta.env.VITE_ADSGRM_INT_FORC
 
 /** Mango Market ad block IDs (Adsgram). Reward or Interstitial chosen at random. */
 export const MARKET_ADSGRAM_REWARD  = (import.meta.env.VITE_ADSGRM_MARKET_REWARD as string) || "37132";
-export const MARKET_ADSGRAM_INT     = (import.meta.env.VITE_ADSGRM_MARKET_INT as string) || "int-37133";
+export const MARKET_ADSGRAM_INT     = (import.meta.env.VITE_ADSGRM_MARKET_INT as string) || "int-40060";
 
 /** Each purchased Mango lives for 30 days, then auto-expires. */
 export const MANGO_MARKET_EXPIRY_DAYS = 30;
