@@ -13,7 +13,7 @@ import {
 import { useUser } from "@/hooks/useUser";
 import { haptic } from "@/lib/telegram";
 import {
-  showAdsgramInterstitialSimple,
+  showAdsgramInterstitialClickVerified,
 } from "@/lib/ads/adsgram";
 import { showOnclickaAd } from "@/lib/ads/onclicka";
 import type { AdResult } from "@/lib/ads/types";
