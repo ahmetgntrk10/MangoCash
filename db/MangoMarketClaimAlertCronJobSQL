@@ -1,0 +1,23 @@
+-- 1) Eski job varsa güvenli şekilde sil (yoksa hata vermez)
+do $$
+begin
+  if exists (select 1 from cron.job where jobname = 'cloudearn_market_notify') then
+    perform cron.unschedule('cloudearn_market_notify');
+  end if;
+end $$;
+
+-- 2) Temiz haliyle yeniden oluştur
+select cron.schedule(
+  'cloudearn_market_notify',
+  '*/5 * * * *',
+  $cron$
+    select net.http_post(
+      url := 'https://YOUR_PROJECT_ID.supabase.co/functions/v1/market-notify-worker',
+      headers := jsonb_build_object(
+        'Content-Type', 'application/json',
+        'Authorization', 'Bearer YOUR_SERVICE_ROLE_KEY'
+      ),
+      body := '{}'::jsonb
+    );
+  $cron$
+);
