@@ -37,7 +37,7 @@ export const T: Record<string, any> = {
       progress: "{{done}}/3 ads", yourLink: "Your referral link",
       invitedUsers: "Invited Users", totalInvites: "Total Invites", totalEarned: "Total Earned",
       shareMsg: "Join me on MangoCash and earn a lifetime 10% commission on everything your friends earn." },
-    refBonus: { signupPending: "Signup: pending", signupDone: "✓ +300",
+    refBonus: { signupPending: "Signup: pending", signupDone: "✓ +200",
       daysProgress: "{{done}}/10 days", todayAds: "Today: {{n}}/10 ads" },
     profile: { finance: "Finance", community: "Community", settings: "Settings",
       txHistory: "Transaction History", officialChannel: "Official Channel",
