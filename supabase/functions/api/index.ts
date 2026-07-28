@@ -25,6 +25,8 @@ const MINING_RATE_PER_HOUR = 50;
 const MINING_BASE_HOURS = 1;
 const MINING_MAX_HOURS = 6;
 const MINING_CHANNEL = (Deno.env.get("MINING_CHANNEL") || "mangocashnews").replace(/^@/, "");
+const GATE_NEWS_CHANNEL = (Deno.env.get("GATE_NEWS_CHANNEL") || "mangocashnews").replace(/^@/, "");
+const GATE_PAYMENT_CHANNEL = (Deno.env.get("GATE_PAYMENT_CHANNEL") || "mangocashpayments").replace(/^@/, "");
 const REF_BONUS_SIGNUP = 200;
 const REF_BONUS_DAY = 300;
 const REF_BONUS_DAYS_REQUIRED = 10;
@@ -255,6 +257,41 @@ Deno.serve(async (req) => {
         return json({ ticket: data.id });
       }
 
+        case "gate_channel_check": {
+        const kind = String(body.kind || "");
+        const ch = kind === "news" ? GATE_NEWS_CHANNEL : kind === "payment" ? GATE_PAYMENT_CHANNEL : "";
+        if (!ch) return json({ ok: false, reason: "bad_kind" });
+        if (!BOT_TOKEN) return json({ ok: false, reason: "server" });
+        try {
+          const r = await fetch(
+            `https://api.telegram.org/bot${BOT_TOKEN}/getChatMember?chat_id=${encodeURIComponent("@" + ch)}&user_id=${tgId}`,
+          );
+          const j = await r.json();
+          const st = j?.result?.status;
+          const ok = ["member", "administrator", "creator"].includes(st);
+          return json({ ok });
+        } catch { return json({ ok: false, reason: "network" }); }
+      }
+      case "gate_channel_verify": {
+        if (!BOT_TOKEN) return json({ ok: false, reason: "server" });
+        const checkOne = async (ch: string) => {
+          try {
+            const r = await fetch(
+              `https://api.telegram.org/bot${BOT_TOKEN}/getChatMember?chat_id=${encodeURIComponent("@" + ch)}&user_id=${tgId}`,
+            );
+            const j = await r.json();
+            return ["member", "administrator", "creator"].includes(j?.result?.status);
+          } catch { return false; }
+        };
+        const [okNews, okPay] = await Promise.all([
+          checkOne(GATE_NEWS_CHANNEL),
+          checkOne(GATE_PAYMENT_CHANNEL),
+        ]);
+        if (!okNews || !okPay) return json({ ok: false, okNews, okPay });
+        await supabase.from("users").update({ channels_verified: true }).eq("tg_id", tgId);
+        return json({ ok: true });
+      }
+        
       // ───── INIT / AUTH ─────
       case "init": {
         const startParam = body.start_param ?? v.startParam ?? null;
