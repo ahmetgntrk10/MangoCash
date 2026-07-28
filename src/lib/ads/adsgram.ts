@@ -115,9 +115,9 @@ export async function showAdsgramInterstitialClickVerified(
 
 /** Backwards-compatible aliases the rest of the app already imports. */
 export const showAdsgramRewarded = (blockId: string) =>
-  showAdsgramInterstitialSimple(blockId);
+  showAdsgramRewardedClickVerified(blockId, 10);
 export const showAdsgramInterstitial = (blockId: string) =>
-  showAdsgramInterstitialSimple(blockId);
+  showAdsgramInterstitialClickVerified(blockId, 10, 10);
 
 /**
  * NON-strict interstitial. Only requires ad SDK to report `done=true`.
