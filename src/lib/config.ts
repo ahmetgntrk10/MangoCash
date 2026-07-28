@@ -84,7 +84,7 @@ export const TAPTAP = {
   PER_TAP: 5,
   DAILY_MAX: 1000,
   AD_EVERY: 100,
-  INTERSTITIAL_BLOCK: (import.meta.env.VITE_ADSGRM_TAPTAP_INT as string) || "int-37334",
+  INTERSTITIAL_BLOCK: (import.meta.env.VITE_ADSGRM_TAPTAP_INT as string) || "int-40064",
 } as const;
 
 export const CHANNELS = {
