@@ -13,6 +13,11 @@ declare global {
 let initPromise: Promise<(() => Promise<void>) | null> | null = null;
 
 function getShow(): Promise<(() => Promise<void>) | null> {
+  // OnClickA artık pasif (auto-show) tag formatına geçti; initCdTma yok,
+  // programatik show() sağlamıyor. Bu yüzden hep no-fill dönüyoruz.
+  // Eski haline dönmek için bu satırı silip alttaki orijinal koda geç.
+  return Promise.resolve(null);
+  // ---- orijinal kod (revert için) ----
   if (initPromise) return initPromise;
   initPromise = new Promise((resolve) => {
     if (typeof window.initCdTma === "function") {
