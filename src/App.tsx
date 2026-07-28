@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
 import { useAuth } from "@/hooks/useAuth";
@@ -12,9 +12,9 @@ import AdminPage from "@/pages/Admin";
 import AuthGate from "@/components/AuthGate";
 import { AdGateProvider } from "@/components/ads/AdGate";
 import { useAutoInterstitial } from "@/lib/ads/useAutoInterstitial";
+import ChannelJoinGate from "@/components/ChannelJoinGate";
 
 function MainApp({ tgId }: { tgId: number | null }) {
-  useAutoInterstitial();
   const nav = useNavigate();
   useEffect(() => {
     try {
@@ -44,14 +44,25 @@ function MainApp({ tgId }: { tgId: number | null }) {
 
 export default function App() {
   const auth = useAuth();
+  const [verifiedOverride, setVerifiedOverride] = useState(false);
+  const verified = auth.channelsVerified || verifiedOverride;
   return (
     <>
       <AuthGate auth={auth}>
-        <AdGateProvider>
-          <MainApp tgId={auth.tgId} />
-        </AdGateProvider>
+        {verified ? (
+          <AdGateProvider>
+            <VerifiedShell tgId={auth.tgId} />
+          </AdGateProvider>
+        ) : (
+          <ChannelJoinGate onDone={() => setVerifiedOverride(true)} />
+        )}
       </AuthGate>
       <Toaster position="top-center" theme="dark" duration={3000} />
     </>
   );
+}
+
+function VerifiedShell({ tgId }: { tgId: number | null }) {
+  useAutoInterstitial();
+  return <MainApp tgId={tgId} />;
 }
