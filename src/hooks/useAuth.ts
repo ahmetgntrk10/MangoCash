@@ -101,6 +101,7 @@ export function useAuth(): AuthState {
         setState({
           loading: false, error: null,
           tgId: result.tg_id, isAdmin: result.isAdmin,
+          channelsVerified: !!result.user?.channels_verified,
         });
       } catch (e: any) {
         if (!cancelled)
