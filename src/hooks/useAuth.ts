@@ -11,6 +11,7 @@ export interface AuthState {
   blocked?: boolean;
   tgId: number | null;
   isAdmin: boolean;
+  channelsVerified?: boolean;
   retry?: () => void;
 }
 
