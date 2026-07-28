@@ -7,7 +7,7 @@ export async function showMonetagRewarded(): Promise<AdResult> {
     return { ok: false, reason: "no-fill", message: "Monetag SDK not loaded" };
   }
   try {
-    await window.show_11434716;
+        await window.show_11434716();
     return { ok: true };
   } catch (e: any) {
     const msg = String(e?.message || e || "").toLowerCase();
