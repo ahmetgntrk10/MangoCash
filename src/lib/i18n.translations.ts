@@ -33,7 +33,7 @@ export const T: Record<string, any> = {
       notStarted: "Open the task first.",
       invalidChannel: "Channel is not configured correctly.",
       dailyLimit: "Daily limit reached." },
-    ref: { rule: "Lifetime 10% commission on everything your invited friends earn.",
+    ref: { rule: "Earn 200 Mango for each friend you invite. Your referrals can earn up to 300 Mango daily by watching 10 AdsGram ads for 10 days. You'll also receive a 10% lifetime commission from all their earnings.",
       progress: "{{done}}/3 ads", yourLink: "Your referral link",
       invitedUsers: "Invited Users", totalInvites: "Total Invites", totalEarned: "Total Earned",
       shareMsg: "Join me on MangoCash and earn a lifetime 10% commission on everything your friends earn." },
