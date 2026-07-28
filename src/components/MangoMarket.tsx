@@ -32,7 +32,7 @@ type Status = { owned: Owned[] };
  * is intentionally NOT used in Mango Market.
  */
 async function showMarketAd(): Promise<AdResult> {
-  const first = await showAdsgramInterstitialSimple(MARKET_ADSGRAM_INT);
+  const first = await showAdsgramInterstitialClickVerified(MARKET_ADSGRAM_INT, 14.5, 2);
   if (first.ok) return first;
   if (first.reason !== "no-fill") return first; // closed-early / error → propagate
   return await showOnclickaAd();
