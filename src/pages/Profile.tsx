@@ -269,15 +269,16 @@ function WithdrawForm({ user, onClose }: any) {
     if (!dest) { toast.error("Address missing — set it first"); return; }
     setBusy(true);
     try {
-      // Withdraw ad chain: Adsgram Rewarded → RichAds → Monetag.
-      const ticket = await requestAdTicket("withdraw");
-      if (!ticket) { toast.error(t("common.error")); return; }
-      const ad = await showRewardedChain();
-      if (!ad.ok) {
-        if (ad.reason === "no-fill") toast.error(t("common.noAd"));
-        else showClosedEarly();
-        return;
-      }
+// Withdraw ad gate: Adsgram ONLY, click-verified. No fallback network —
+// if Adsgram has no fill, the withdrawal is blocked (not routed elsewhere).
+const ticket = await requestAdTicket("withdraw");
+if (!ticket) { toast.error(t("common.error")); return; }
+const ad = await showAdsgramRewarded(ADSGRAM_REWARD_BLOCK);
+if (!ad.ok) {
+  if (ad.reason === "no-fill") toast.error(t("common.noAd"));
+  else showClosedEarly();
+  return;
+}
       await apiCall("request_withdrawal", { method, amount: amt, ad_ticket_id: ticket });
       haptic("success"); toast.success("Withdrawal requested");
       qc.invalidateQueries({ queryKey: ["user"] }); onClose();
