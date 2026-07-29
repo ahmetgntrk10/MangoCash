@@ -2192,7 +2192,7 @@ async function handleTelegramUpdate(supabase: any, update: any) {
   const lines = [
     `🎁 Welcome to MangoCash, ${name}`,
     "",
-    "The Telegram Mini App where you can earn up to 0.1$ per day + more than 0.01$ per referral",
+    "The Telegram Mini App where you can earn up to 0.1$ per day + more than 0.033$ per referral",
     "",
     "👇 Tap the button below to open the app and start earning!",
   ];
