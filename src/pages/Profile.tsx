@@ -14,7 +14,6 @@ import { SUPPORTED_LANGS } from "@/lib/i18n";
 import i18n from "@/lib/i18n";
 import { CHANNELS, WITHDRAW, REF_MIN_FOR_WITHDRAW } from "@/lib/config";
 import { showAdsgramRewarded, showAdsgramInterstitial, ADSGRAM_REWARD_BLOCK, ADSGRAM_INT_FORCE } from "@/lib/ads";
-import { showRewardedChain } from "@/lib/ads/chain";
 import { useAdGate } from "@/components/ads/AdGate";
 
 type Sheet = null | "address" | "convert" | "withdraw" | "history" | "promo" | "lang";
