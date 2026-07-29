@@ -1,6 +1,6 @@
-import { NavLink, Outlet, useLocation } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import { Home, ListChecks, Users, User, Coins } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
 const SIDE_TABS = [
@@ -12,24 +12,14 @@ const RIGHT_TABS = [
   { to: "/profile", icon: User, key: "profile" },
 ] as const;
 
+// ESKİ:
 export default function Layout({ tgId: _tgId }: { tgId: number | null }) {
   const { t } = useTranslation();
-  const location = useLocation();
 
   return (
     <div className="relative min-h-screen text-foreground">
-      <main className="mx-auto max-w-md px-4 pb-28 pt-6">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={location.pathname}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <Outlet />
-          </motion.div>
-        </AnimatePresence>
+      <main className="mx-auto max-w-md px-4 pb-28 pt-6 animate-page-enter">
+        <Outlet />
       </main>
 
       <nav className="fixed bottom-0 left-1/2 z-40 w-full max-w-md -translate-x-1/2">
