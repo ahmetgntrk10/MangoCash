@@ -1,0 +1,66 @@
+-- 1) Market notifier cron: 5 dk -> 30 dk
+do $$
+begin
+  if exists (select 1 from pg_extension where extname = 'pg_cron')
+     and exists (select 1 from pg_extension where extname = 'pg_net') then
+    perform cron.unschedule(jobid)
+      from cron.job where jobname in ('cloudearn_market_notify','mangocash_market_notify');
+    perform cron.schedule(
+      'mangocash_market_notify', '*/30 * * * *', $cron$
+        select net.http_post(
+          url := current_setting('app.settings.functions_url', true) || '/market-notify-worker',
+          headers := jsonb_build_object(
+            'Content-Type', 'application/json',
+            'Authorization', 'Bearer ' || current_setting('app.settings.service_role_key', true)
+          ),
+          body := '{}'::jsonb
+        );
+      $cron$
+    );
+  end if;
+end $$;
+
+-- 2) Eksik indexler
+create index if not exists idx_users_referred_by on public.users (referred_by);
+do $$
+begin
+  if to_regclass('public.taptap_daily') is not null then
+    execute 'create index if not exists idx_taptap_daily_user_day on public.taptap_daily (user_tg_id, day)';
+  end if;
+end $$;
+
+-- 3) ad_tickets günlük temizlik (her reklamda satır yazılıyor)
+create or replace function public.purge_old_ad_tickets()
+returns void language sql security definer set search_path = public as $body$
+  delete from public.ad_tickets where created_at < now() - interval '2 days';
+$body$;
+
+do $$
+begin
+  if exists (select 1 from pg_extension where extname = 'pg_cron') then
+    perform cron.unschedule(jobid) from cron.job where jobname = 'mangocash_purge_ad_tickets';
+    perform cron.schedule('mangocash_purge_ad_tickets', '17 3 * * *',
+      $cron$ select public.purge_old_ad_tickets(); $cron$);
+  end if;
+end $$;
+
+-- 4) Süresi dolmuş market bulutlarını temizle
+do $$
+begin
+  if to_regclass('public.user_clouds') is not null then
+    execute $f$
+      create or replace function public.purge_expired_user_clouds()
+      returns void language sql security definer set search_path = public as $body$
+        delete from public.user_clouds where expires_at < now() - interval '7 days';
+      $body$;
+    $f$;
+    if exists (select 1 from pg_extension where extname = 'pg_cron') then
+      perform cron.unschedule(jobid) from cron.job where jobname = 'mangocash_purge_expired_clouds';
+      perform cron.schedule('mangocash_purge_expired_clouds', '31 3 * * *',
+        $cron$ select public.purge_expired_user_clouds(); $cron$);
+    end if;
+  end if;
+end $$;
+
+analyze public.users;
+
