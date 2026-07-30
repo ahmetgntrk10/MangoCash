@@ -46,13 +46,15 @@ const MARKET_EXPIRY_MS = 30 * 24 * 3600 * 1000;
 
 /**
  * Reasons that DO earn 15% commission for the referrer.
- * Explicitly excludes: daily, promo, market_claim, and social (channel) tasks.
+ * Explicitly excludes: promo, and social/exclusive/partners tasks.
  */
 function commissionable(reason: string): boolean {
   if (!reason) return false;
+  if (reason === "daily") return true;
   if (reason === "mining") return true;
-  if (reason.startsWith("ad_")) return true;    // task-page ad views
-  if (reason === "exclusive_task") return true; // paid exclusive tasks only
+  if (reason.startsWith("ad_")) return true;    // task-page ad views (tüm reklam ağları)
+  if (reason === "taptap") return true;
+  if (reason === "market_claim") return true;
   return false;
 }
 
