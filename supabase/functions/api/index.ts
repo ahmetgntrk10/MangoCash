@@ -1791,12 +1791,17 @@ try {
         const row = await getOrInitTaptap(supabase, tgId);
         if (row.earned >= 1000) return json({ error: "daily_limit" }, 400);
         if (row.locked) return json({ error: "locked_watch_ad" }, 400);
-        // Anti-bot: enforce min 40ms between taps.
+        // Batch tap: istemci tapları biriktirip tek çağrıda gönderir.
+        const requested = Math.max(1, Math.min(40, Number(body.taps ?? 1) || 1));
         const now = Date.now();
         const last = row.last_tap_at ? new Date(row.last_tap_at).getTime() : 0;
         if (now - last < 40) return json({ error: "too_fast" }, 429);
 
-        const gained = 5;
+        // Tek batch içinde 100'lük reklam sınırını ve günlük limiti asla aşma.
+        const toBoundary = 100 - (row.earned % 100);
+        const toLimit = 1000 - row.earned;
+        const gained = Math.max(0, Math.min(requested * 5, toBoundary, toLimit));
+        if (gained <= 0) return json({ error: "locked_watch_ad" }, 400);
         const newEarned = Math.min(1000, row.earned + gained);
         const crossed = Math.floor(newEarned / 100) > Math.floor(row.earned / 100);
         const shouldLock = crossed && newEarned < 1000;
