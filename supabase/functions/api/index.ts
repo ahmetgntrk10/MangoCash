@@ -1816,14 +1816,14 @@ try {
 
         // Credit balance.
         const { data: u } = await supabase.from("users")
-          .select("balance_cloud,total_earned_cloud").eq("tg_id", tgId).maybeSingle();
+          .select("balance_cloud,total_earned_cloud,referred_by").eq("tg_id", tgId).maybeSingle();
         if (u) {
           await supabase.from("users").update({
             balance_cloud: Number(u.balance_cloud) + gained,
             total_earned_cloud: Number(u.total_earned_cloud) + gained,
           }).eq("tg_id", tgId);
+          await commissionToReferrer(supabase, u.referred_by, tgId, gained, "taptap");
         }
-        // NOTE: Tap-Tap intentionally NOT commissioned to referrer.
         return json({
           earned_today: newEarned,
           credited: gained,
