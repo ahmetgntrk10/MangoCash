@@ -90,40 +90,57 @@ const [flyItems, setFlyItems] = useState<{ id: number; x: number; y: number }[]>
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locked, done]);
 
-  async function onTap(e: React.MouseEvent<HTMLButtonElement>) {
+  /** Send all accumulated taps in a single edge-function call. */
+  async function flushTaps() {
+    if (flushing.current) return;
+    const sending = pendingRef.current;
+    const taps = Math.floor(sending / TAPTAP.PER_TAP);
+    if (taps <= 0) return;
+    flushing.current = true;
+    try {
+      const r = await apiCall<{ earned_today: number; credited: number; locked: boolean; next_lock_at: number; error?: string }>(
+        "taptap_tap", { taps },
+      );
+      if (r?.error) { toast.error(r.error); return; }
+      // Only clear what the server accepted; taps made mid-flight are kept.
+      pendingRef.current = Math.max(0, pendingRef.current - (r.credited ?? sending));
+      setPendingCloud(pendingRef.current);
+      qc.setQueryData<Status>(["taptap_status", tgId], (prev) =>
+        prev ? { ...prev, earned_today: r.earned_today, locked: r.locked, next_lock_at: r.next_lock_at } : prev,
+      );
+      qc.invalidateQueries({ queryKey: ["user", tgId] });
+    } catch (e: any) {
+      pendingRef.current = 0;
+      setPendingCloud(0);
+      toast.error(e?.message ?? "Tap failed");
+      refetch();
+    } finally {
+      flushing.current = false;
+    }
+  }
+
+  // Flush anything left when leaving the game.
+  useEffect(() => () => { if (pendingRef.current > 0) flushTaps(); }, []);
+
+  function onTap(e: React.MouseEvent<HTMLButtonElement>) {
     if (locked || done || tapBusy) return;
-    setTapBusy(true);
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     const id = ++nextId.current;
     setFloaters((f) => [...f, { id, x, y }]);
     setTimeout(() => setFloaters((f) => f.filter((x) => x.id !== id)), 900);
-
-    // tap bounce animasyonu
-    setTapAnim(true);
-    setTimeout(() => setTapAnim(false), 250);
-
-    // kazanç uçuşu (+N 🥭)
-    const flyId = Date.now();
-    setFlyItems((prev) => [...prev, { id: flyId, x: Math.random() * 60 - 30, y: 0 }]);
-    setTimeout(() => setFlyItems((prev) => prev.filter((f) => f.id !== flyId)), 900);
-
     haptic("light");
-    try {
-      const r = await apiCall<{ earned_today: number; locked: boolean; next_lock_at: number; error?: string }>(
-        "taptap_tap", {},
-      );
-      if (r?.error) { toast.error(r.error); return; }
-      qc.setQueryData<Status>(["taptap_status", tgId], (prev) =>
-        prev ? { ...prev, earned_today: r.earned_today, locked: r.locked, next_lock_at: r.next_lock_at } : prev,
-      );
-      if (r.earned_today >= limit) {
-        qc.invalidateQueries({ queryKey: ["user", tgId] });
-      }
-    } catch (e: any) {
-      toast.error(e?.message ?? "Tap failed");
-    } finally { setTapBusy(false); }
+
+    pendingRef.current += TAPTAP.PER_TAP;
+    setPendingCloud(pendingRef.current);
+
+    const total = serverEarned + pendingRef.current;
+    // Must sync immediately at an ad boundary or the daily cap.
+    const atBoundary = total % TAPTAP.AD_EVERY === 0 || total >= limit;
+    if (flushTimer.current) { clearTimeout(flushTimer.current); flushTimer.current = null; }
+    if (atBoundary) { flushTaps(); return; }
+    flushTimer.current = window.setTimeout(() => { flushTimer.current = null; flushTaps(); }, 900);
   }
 
   return (
