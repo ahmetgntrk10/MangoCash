@@ -1824,6 +1824,7 @@ try {
         // NOTE: Tap-Tap intentionally NOT commissioned to referrer.
         return json({
           earned_today: newEarned,
+          credited: gained,
           locked: shouldLock,
           next_lock_at: nextLockAt(newEarned),
         });
