@@ -169,7 +169,7 @@ function MarketList({ tgId }: { tgId: number | null }) {
     queryKey: ["market_status", tgId],
     enabled: !!tgId,
     queryFn: async () => apiCall<Status>("market_status"),
-    refetchInterval: 60_000,
+        staleTime: 5 * 60_000,
   });
   const ownedIds = useMemo(
     () => new Set((status?.owned ?? []).map((o) => o.product_id)),
@@ -306,11 +306,11 @@ function MyMangos({ tgId }: { tgId: number | null }) {
   const { showClosedEarly } = useAdGate();
   const [now, setNow] = useState(Date.now());
   useEffect(() => { const i = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(i); }, []);
-  const { data } = useQuery({
+    const { data, refetch } = useQuery({
     queryKey: ["market_status", tgId],
     enabled: !!tgId,
     queryFn: async () => apiCall<Status>("market_status"),
-    refetchInterval: 30_000,
+    staleTime: 5 * 60_000,
   });
   const owned = data?.owned ?? [];
   const [busy, setBusy] = useState<string | null>(null);
@@ -340,6 +340,17 @@ function MyMangos({ tgId }: { tgId: number | null }) {
     return { total, perHour, pending, readyCount };
   }, [rows]);
 
+  // Polling yerine: saatlik döngü dolunca tek re-sync.
+  const syncedFor = useRef(0);
+  useEffect(() => {
+    if (rows.some((r) => !r.hourReady)) { syncedFor.current = 0; return; }
+    if (!rows.length) return;
+    const key = Math.max(...rows.map((r) => r.nextAt));
+    if (syncedFor.current === key) return;
+    syncedFor.current = key;
+    refetch();
+  }, [rows, refetch]);
+  
   async function watchAd(row: (typeof rows)[number]) {
     if (busy) return;
     if (!row.hourReady) { toast.error("Wait for the hourly cycle to finish first."); return; }
