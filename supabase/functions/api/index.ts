@@ -1742,7 +1742,7 @@ try {
           daily_claims: { [todayKey]: usedToday + 1 },
           last_notified_at: null,
         }).eq("id", id);
-        // Market claim is EXCLUDED from referral commission on purpose.
+        await commissionToReferrer(supabase, u.referred_by, tgId, reward, "market_claim");
         return json({ ok: true, reward, daily_claims_today: usedToday + 1, daily_cap: 7 });
       }
 
