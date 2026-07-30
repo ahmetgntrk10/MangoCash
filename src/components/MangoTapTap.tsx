@@ -39,10 +39,18 @@ const [flyItems, setFlyItems] = useState<{ id: number; x: number; y: number }[]>
     queryKey: ["taptap_status", tgId],
     queryFn: () => apiCall<Status>("taptap_status"),
     enabled: !!tgId,
-    staleTime: 5_000,
+        staleTime: 60_000,
   });
 
-  const earned = data?.earned_today ?? 0;
+    // Sunucuya henüz gönderilmemiş (iyimser) taplar.
+  const [pendingCloud, setPendingCloud] = useState(0);
+  const pendingRef = useRef(0);
+  const flushTimer = useRef<number | null>(null);
+  const flushing = useRef(false);
+
+  const serverEarned = data?.earned_today ?? 0;
+  const earned = serverEarned + pendingCloud;
+  
   const limit = data?.limit ?? TAPTAP.DAILY_MAX;
   const locked = data?.locked ?? false;
   const done = earned >= limit;
