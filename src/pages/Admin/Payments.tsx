@@ -41,6 +41,7 @@ function PendingList({ method, showBulk }: { method: "faucetpay" | "binance" | "
     queryFn: async () => (await apiCall<{ data: any[] }>("admin_pending_withdrawals", { method })).data ?? [],
     staleTime: 15_000,
     placeholderData: keepPreviousData,
+    refetchOnMount: true, // admin paneli: sekmeye her dönüşte taze veri çeksin (worker'ın bitirdiği ödemeler anında görünsün)
   });
 
   async function setStatus(id: string, status: "approved" | "rejected", extras?: { tx_id?: string }) {
