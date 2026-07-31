@@ -71,8 +71,20 @@ function PendingList({ method, showBulk }: { method: "faucetpay" | "binance" | "
     finally { setBulking(false); }
   }
 
+  // FaucetPay ve Toncoin sekmelerinde bekleyen taleplerin toplam net tutarı.
+  const totalNet = (items ?? []).reduce(
+    (sum: number, it: any) => sum + Number(it.amount_net_usdt ?? (Number(it.amount_usdt) - Number(it.fee_usdt ?? 0))),
+    0,
+  );
+
   return (
     <div className="space-y-2">
+      {(method === "faucetpay" || method === "toncoin") && !!items?.length && (
+        <div className="flex items-center justify-between rounded-2xl bg-surface-1/60 px-3 py-2 text-xs ring-1 ring-border">
+          <span className="text-muted-foreground">{items.length} pending request{items.length > 1 ? "s" : ""}</span>
+          <span className="font-semibold text-earn">Total: {formatUsdt(totalNet)}</span>
+        </div>
+      )}
       {showBulk && (
         <button disabled={bulking || !(items?.length)} onClick={bulkPay}
           className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-earn py-2.5 text-sm font-bold text-earn-foreground shadow-earn disabled:opacity-50">
