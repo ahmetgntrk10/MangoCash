@@ -1,4 +1,4 @@
-project_id = "wtoddchuzjnroktuvthe"
+project_id = "local"
 
 [functions.api]
 verify_jwt = false
