@@ -31,17 +31,17 @@ export function useUser(tgId: number | null) {
       const res = await apiCall<{ user: AppUser | null }>("get_user");
       return res.user;
     },
-    staleTime: 5 * 60_000,
   });
 }
 
-// init zaten isAdmin dönüyor ve cache'i dolduruyor; ikinci get_user çağrısı yok.
 export function useIsAdmin(tgId: number | null) {
   return useQuery({
     queryKey: ["isAdmin", tgId],
     enabled: !!tgId,
-    queryFn: async () => false,
-    staleTime: Infinity,
-    gcTime: Infinity,
+    queryFn: async () => {
+      if (!tgId) return false;
+      const res = await apiCall<{ isAdmin: boolean }>("get_user");
+      return res.isAdmin;
+    },
   });
 }
