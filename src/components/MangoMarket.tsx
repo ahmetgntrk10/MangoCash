@@ -169,7 +169,7 @@ function MarketList({ tgId }: { tgId: number | null }) {
     queryKey: ["market_status", tgId],
     enabled: !!tgId,
     queryFn: async () => apiCall<Status>("market_status"),
-        staleTime: 5 * 60_000,
+            refetchInterval: 60_000,
   });
   const ownedIds = useMemo(
     () => new Set((status?.owned ?? []).map((o) => o.product_id)),
