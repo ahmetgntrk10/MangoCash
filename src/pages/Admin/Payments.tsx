@@ -72,9 +72,14 @@ function PendingList({ method, showBulk }: { method: "faucetpay" | "binance" | "
     finally { setBulking(false); }
   }
 
-  // FaucetPay ve Toncoin sekmelerinde bekleyen taleplerin toplam net tutarı.
+ // FaucetPay ve Toncoin sekmelerinde bekleyen taleplerin toplam net tutarı.
   const totalNet = (items ?? []).reduce(
     (sum: number, it: any) => sum + Number(it.amount_net_usdt ?? (Number(it.amount_usdt) - Number(it.fee_usdt ?? 0))),
+    0,
+  );
+  // Binance ve Toncoin sekmelerinde bekleyen taleplerin toplam komisyon (fee) tutarı.
+  const totalFee = (items ?? []).reduce(
+    (sum: number, it: any) => sum + Number(it.fee_usdt ?? 0),
     0,
   );
 
@@ -84,6 +89,12 @@ function PendingList({ method, showBulk }: { method: "faucetpay" | "binance" | "
         <div className="flex items-center justify-between rounded-2xl bg-surface-1/60 px-3 py-2 text-xs ring-1 ring-border">
           <span className="text-muted-foreground">{items.length} pending request{items.length > 1 ? "s" : ""}</span>
           <span className="font-semibold text-earn">Total: {formatUsdt(totalNet)}</span>
+        </div>
+      )}
+      {(method === "binance" || method === "toncoin") && !!items?.length && (
+        <div className="flex items-center justify-between rounded-2xl bg-warning/10 px-3 py-2 text-xs ring-1 ring-warning/30">
+          <span className="text-warning">Fee to send @ahmetgntrk11</span>
+          <span className="font-semibold text-warning">{formatUsdt(totalFee)} USDT</span>
         </div>
       )}
       {showBulk && (
