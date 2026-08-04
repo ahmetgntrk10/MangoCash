@@ -14,17 +14,9 @@ import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
 
 const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60_000,
-      gcTime: 30 * 60_000,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      refetchOnMount: false,
-      retry: 1,
-    },
-  },
+  defaultOptions: { queries: { staleTime: 30_000, refetchOnWindowFocus: false } },
 });
+
 
 
 // Telegram WebApp init (no-op outside Telegram)
