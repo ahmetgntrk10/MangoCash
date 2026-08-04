@@ -30,32 +30,19 @@ export default function MiningCard({ tgId }: { tgId: number | null }) {
   const [busy, setBusy] = useState(false);
   const [showJoin, setShowJoin] = useState(false);
 
-    const { data: status, refetch } = useQuery({
+      const { data: status } = useQuery({
     queryKey: ["mining_status", tgId],
     enabled: !!tgId,
     queryFn: async () => (await apiCall<Status>("mining_status")),
-    staleTime: 60_000,
+    refetchInterval: 30_000,
   });
 
-  useEffect(() => {
-    if (status?.state !== "running") return;
-    const i = setInterval(() => setNow(Date.now()), 1000);
-    return () => clearInterval(i);
-  }, [status?.state]);
+  useEffect(() => { const i = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(i); }, []);
 
   const expiresAt = status?.session ? new Date(status.session.expires_at).getTime() : 0;
   const remainingMs = Math.max(0, expiresAt - now);
   const reward = status?.session?.reward ?? MINING.ratePerHour;
 
-  // Sayaç sıfırlanınca tek seferlik senkron.
-  const syncedFor = useRef(0);
-  useEffect(() => {
-    if (status?.state !== "running" || !expiresAt) return;
-    if (remainingMs > 0) return;
-    if (syncedFor.current === expiresAt) return;
-    syncedFor.current = expiresAt;
-    refetch();
-  }, [remainingMs, expiresAt, status?.state, refetch]);
 
 
   const progress = useMemo(() => {
