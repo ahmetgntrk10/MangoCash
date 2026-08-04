@@ -79,7 +79,7 @@ function AdsTab({ tgId }: { tgId: number | null }) {
     enabled: !!tgId,
     queryFn: async () =>
       apiCall<{ data: Record<AdNetworkKey, number>; cooldowns: Record<AdNetworkKey, number> }>("ad_stats"),
-        staleTime: 60_000,
+            refetchInterval: 8000,
   });
 
   return (
