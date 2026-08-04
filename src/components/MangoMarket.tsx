@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -169,7 +169,7 @@ function MarketList({ tgId }: { tgId: number | null }) {
     queryKey: ["market_status", tgId],
     enabled: !!tgId,
     queryFn: async () => apiCall<Status>("market_status"),
-            refetchInterval: 60_000,
+                staleTime: 5 * 60_000,
   });
   const ownedIds = useMemo(
     () => new Set((status?.owned ?? []).map((o) => o.product_id)),
