@@ -14,7 +14,7 @@ const BOT_USERNAME = (Deno.env.get("BOT_USERNAME") || "MangoCashBot").replace(/^
 const APP_START_LINK = Deno.env.get("APP_START_LINK")
   || `https://t.me/${BOT_USERNAME}/earn?startapp=5640381390`;
 
-const REF_COMMISSION_PCT = 10;
+const REF_COMMISSION_PCT = 5;
 const DAILY_REWARD = 80;
 const BANNER_VIEW_WINDOW_MS = 12 * 60 * 60 * 1000;
 const BANNER_DISMISS_HIDE_MS = 12 * 60 * 60 * 1000;
@@ -66,7 +66,7 @@ const AD_DAILY_LIMITS: Record<string, number> = {
   adsgram: 10, monetag: 8, richads: 8, onclicka: 8, gigapup: 5, towerads: 10,
 };
 const AD_REWARDS: Record<string, number> = {
-  adsgram: 80, monetag: 25, richads: 25, onclicka: 20, gigapup: 20, towerads: 20,
+  adsgram: 65, monetag: 25, richads: 25, onclicka: 20, gigapup: 20, towerads: 20,
 };
 const AD_TICKET_TTL_MS = 120_000;
 
