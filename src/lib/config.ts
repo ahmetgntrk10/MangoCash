@@ -3,7 +3,7 @@
  * Server-side mirrors live in `app_config` table (see db migration).
  */
 export const AD_NETWORKS = {
-  adsgram:  { reward: 80, cooldownMs: 10_000, dailyLimit: 10, label: "Adsgram"  },
+  adsgram:  { reward: 65, cooldownMs: 10_000, dailyLimit: 10, label: "Adsgram"  },
   monetag:  { reward: 25, cooldownMs:  5_000, dailyLimit: 8, label: "Monetag"  },
   richads:  { reward: 25, cooldownMs: 15_000, dailyLimit: 8, label: "RichAds"  },
   onclicka: { reward: 20, cooldownMs:  5_000, dailyLimit: 8, label: "OnClickA" },
@@ -15,7 +15,7 @@ export type AdNetworkKey = keyof typeof AD_NETWORKS;
 export const DAILY_REWARD_MANGO = 80;
 // Referral rules: no one-off signup reward. 15% lifetime commission
 // (backend-computed) on invitee earnings except mining/market/daily/promo/social.
-export const REF_COMMISSION_PCT = 15;
+export const REF_COMMISSION_PCT = 5;
 export const REF_MIN_FOR_WITHDRAW = 2;
 
 /** Withdrawal fees and minimums. Edit these to tune. */
