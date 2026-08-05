@@ -18,8 +18,8 @@ export async function showTowerAdsRewarded(): Promise<AdResult> {
   return new Promise((resolve) => {
     try {
       const ads = new window.TowerAds!({
-        apiKey: "05a6d02f451150f753cffdce5e1e8f68",
-        placementId: "plc_610b1e2a2747348a",
+        apiKey: "ca5fb16ca37e0d66d722d449e6616e04",
++        placementId: "plc_ca5008e82312f4ef",
         onRewardEarned() {
           resolve({ ok: true });
         },
