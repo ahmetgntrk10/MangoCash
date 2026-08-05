@@ -99,7 +99,7 @@ export default function ReferralPage({ tgId }: { tgId: number | null }) {
                     <div className="truncate text-sm font-medium">{r.first_name ?? "User"} {r.last_name ?? ""}</div>
                     <div className="truncate text-[11px] text-muted-foreground">@{r.username ?? "—"}</div>
                     <div className="mt-1 text-[10px] text-muted-foreground">
-                      Lifetime commission: 10%
+                      Lifetime commission: 5%
                     </div>
                     {(() => {
                       const p = refBonusMap.get(r.tg_id);
