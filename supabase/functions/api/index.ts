@@ -906,6 +906,13 @@ Deno.serve(async (req) => {
           }
           updates.ton_address = v || null;
         }
+        if (body.usdt_bep20_address !== undefined) {
+          const v = String(body.usdt_bep20_address || "").trim();
+          if (v && !/^0x[a-fA-F0-9]{40}$/.test(v)) {
+            return json({ error: "invalid_bep20_address" }, 400);
+          }
+          updates.usdt_bep20_address = v || null;
+        }
         if (body.faucetpay_address !== undefined) {
           updates.faucetpay_address = body.faucetpay_address || null;
         }
@@ -959,23 +966,24 @@ try {
       case "request_withdrawal": {
         const method = body.method;
         const amt = Number(body.amount) || 0;
-        if (!["faucetpay", "binance", "toncoin"].includes(method)) return json({ error: "bad_method" }, 400);
+        if (!["faucetpay", "binance", "toncoin", "usdt_bep20"].includes(method)) return json({ error: "bad_method" }, 400);
         const u = await getUser(); if (!u) return json({ error: "no_user" }, 400);
         if (Number(u.referral_count) < 2) return json({ error: "need_refs" }, 400);
         if (amt <= 0 || amt > Number(u.balance_usdt)) return json({ error: "invalid_amount" }, 400);
-        const MIN_BY_METHOD: Record<string, number> = { faucetpay: 0.05, binance: 0.05, toncoin: 0.05 };
+        const MIN_BY_METHOD: Record<string, number> = { faucetpay: 0.05, binance: 0.05, toncoin: 0.05, usdt_bep20: 0.05 };
         const minOk = amt >= (MIN_BY_METHOD[method] ?? 0.2);
         if (!minOk) return json({ error: "below_minimum" }, 400);
         // Mandatory ad ticket
         const tc = await consumeTicket(supabase, tgId, body.ad_ticket_id, "withdraw");
         if (!tc.ok) return json({ error: "ad_required", reason: tc.reason }, 400);
-        const FEE_BY_METHOD: Record<string, number> = { faucetpay: 0, binance: 0.01, toncoin: 0.05 };
+        const FEE_BY_METHOD: Record<string, number> = { faucetpay: 0, binance: 0.01, toncoin: 0.05, usdt_bep20: 0.05 };
         const feeRate = FEE_BY_METHOD[method] ?? 0;
         const fee = +(amt * feeRate).toFixed(8);
         const net = +(amt - fee).toFixed(8);
         const dest =
           method === "faucetpay" ? u.faucetpay_address :
           method === "toncoin"   ? u.ton_address :
+          method === "usdt_bep20" ? u.usdt_bep20_address :
           u.binance_uid;
         if (!dest) return json({ error: "no_address" }, 400);
         const { error } = await supabase.from("withdrawals").insert({
@@ -984,7 +992,7 @@ try {
         });
         if (error) return json({ error: error.message }, 400);
         await supabase.from("users").update({ balance_usdt: Number(u.balance_usdt) - amt }).eq("tg_id", tgId);
-        const methodLabel = method === "faucetpay" ? "FaucetPay" : method === "toncoin" ? "Toncoin" : "Binance Pay";
+        const methodLabel = method === "faucetpay" ? "FaucetPay" : method === "toncoin" ? "Toncoin" : method === "usdt_bep20" ? "USDT (BEP20)" : "Binance Pay";
         await sendUserDM(tgId,
           `📤 *Withdrawal Request Submitted*\n\nYour withdrawal is now pending review by our team\\.\n\n💰 *Amount:* ${md(formatNum(amt))} USDT\n📝 *Method:* ${md(methodLabel)}\n\nYou will receive a notification once it is processed\\. ✅`,
         ).catch(() => {});
@@ -1185,7 +1193,7 @@ try {
         // Toncoin approve requires TxId (manual payout).
         if (status === "approved") {
           const { data: wd0 } = await supabase.from("withdrawals").select("method, tx_id").eq("id", id).maybeSingle();
-          if (wd0?.method === "toncoin") {
+          if (wd0?.method === "toncoin" || wd0?.method === "usdt_bep20") {
             const effectiveTx = tx || wd0.tx_id;
             if (!effectiveTx || String(effectiveTx).trim().length < 8) {
               return json({ error: "tx_id_required" }, 400);
@@ -2070,6 +2078,7 @@ async function _announceToPaymentChannel(wd: any) {
   if (!channelId || !BOT_TOKEN) return;
   const method = wd.method === "faucetpay" ? "FaucetPay"
     : (wd.method === "toncoin" || wd.method === "ton") ? "Toncoin"
+    : wd.method === "usdt_bep20" ? "USDT (BEP20)"
     : "Binance Pay";
   const net = formatNum(Number(wd.amount_net_usdt ?? wd.amount_usdt));
   const tx = wd.tx_id ?? "—";
@@ -2087,6 +2096,9 @@ async function _announceToPaymentChannel(wd: any) {
   } else if (wd.method === "toncoin" || wd.method === "ton") {
     lines.push(`🧾 *TxId:* \`${md(String(tx))}\``);
     if (tx && tx !== "—") lines.push(`[View On Tonviewer](https://tonviewer.com/transaction/${encodeURIComponent(String(tx))})`);
+  } else if (wd.method === "usdt_bep20") {
+    lines.push(`🧾 *TxId:* \`${md(String(tx))}\``);
+    if (tx && tx !== "—") lines.push(`[View On BscScan](https://bscscan.com/tx/${encodeURIComponent(String(tx))})`);
   }
   lines.push("", "Thank you for using MangoCash \\! 🎉");
   await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
@@ -2103,6 +2115,7 @@ async function _announceToPaymentChannel(wd: any) {
 async function notifyUserApproved(wd: any) {
   const method = wd.method === "faucetpay" ? "FaucetPay"
     : (wd.method === "toncoin" || wd.method === "ton") ? "Toncoin"
+    : wd.method === "usdt_bep20" ? "USDT (BEP20)"
     : "Binance Pay";
   const net = formatNum(Number(wd.amount_net_usdt ?? wd.amount_usdt));
   const tx = wd.tx_id ?? "";
@@ -2120,6 +2133,9 @@ async function notifyUserApproved(wd: any) {
   } else if (wd.method === "toncoin" || wd.method === "ton") {
     lines.push(`🧾 *TxId:* \`${md(String(tx || "—"))}\``);
     if (tx) buttons.push([{ text: "View On Tonviewer", url: `https://tonviewer.com/transaction/${encodeURIComponent(tx)}` }]);
+  } else if (wd.method === "usdt_bep20") {
+    lines.push(`🧾 *TxId:* \`${md(String(tx || "—"))}\``);
+    if (tx) buttons.push([{ text: "View On BscScan", url: `https://bscscan.com/tx/${encodeURIComponent(tx)}` }]);
   }
   lines.push("", "Thank you for using MangoCash \\! 🎉");
   await sendUserDM(wd.user_tg_id, lines.join("\n"), buttons.length ? { inline_keyboard: buttons } : undefined);
