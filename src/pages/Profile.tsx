@@ -157,12 +157,14 @@ function AddressForm({ user, onClose }: any) {
   const [binance, setBinance] = useState(user?.binance_uid ?? "");
   const [faucetpay, setFaucetpay] = useState(user?.faucetpay_address ?? "");
   const [toncoin, setToncoin] = useState(user?.ton_address ?? "");
+  const [bep20, setBep20] = useState(user?.usdt_bep20_address ?? "");
   async function save() {
     try {
       await apiCall("update_profile", {
         binance_uid: binance,
         faucetpay_address: faucetpay,
         ton_address: toncoin,
+        usdt_bep20_address: bep20,
       });
       toast.success("Saved"); qc.invalidateQueries({ queryKey: ["user"] }); onClose();
     } catch (e: any) { toast.error(e.message); }
@@ -181,6 +183,17 @@ function AddressForm({ user, onClose }: any) {
         />
         <div className="mt-1 text-[10px] text-warning">
           ⚠️ Only a native Gram (TON) address. Do NOT paste a USDT (TON network / Jetton) address — funds will be lost.
+        </div>
+      </Field>
+      <Field label="USDT (BEP20) Address">
+        <input
+          className="w-full rounded-xl border border-border bg-surface-2/60 px-3 py-2 text-sm outline-none focus:border-primary"
+          value={bep20}
+          onChange={(e) => setBep20(e.target.value)}
+          placeholder="0x..."
+        />
+        <div className="mt-1 text-[10px] text-warning">
+          ⚠️ Only a BEP20 (BNB Smart Chain) USDT address. Wrong network = permanent loss.
         </div>
       </Field>
       <button onClick={save} className="w-full rounded-xl bg-gradient-primary py-2.5 text-sm font-semibold text-primary-foreground shadow-elegant">Save</button>
@@ -217,7 +230,7 @@ function WithdrawForm({ user, onClose }: any) {
   const { t } = useTranslation();
   const qc = useQueryClient();
   const { showClosedEarly } = useAdGate();
-  const [method, setMethod] = useState<"faucetpay" | "binance" | "toncoin">("faucetpay");
+  const [method, setMethod] = useState<"faucetpay" | "binance" | "toncoin" | "usdt_bep20">("faucetpay");
   const [amount, setAmount] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -265,6 +278,7 @@ function WithdrawForm({ user, onClose }: any) {
     const dest =
       method === "faucetpay" ? user.faucetpay_address :
       method === "toncoin" ? user.ton_address :
+      method === "usdt_bep20" ? user.usdt_bep20_address :
       user.binance_uid;
     if (!dest) { toast.error("Address missing — set it first"); return; }
     setBusy(true);
@@ -291,7 +305,7 @@ if (!ad.ok) {
       <h3 className="font-display text-base font-bold">{t("withdraw.title")}</h3>
       <div className="text-xs text-muted-foreground">Balance: {formatUsdt(Number(user?.balance_usdt ?? 0))} USDT</div>
       <div className="flex gap-2">
-        {(["faucetpay", "binance", "toncoin"] as const).map((m) => (
+        {(["faucetpay", "binance", "toncoin", "usdt_bep20"] as const).map((m) => (
           <button key={m} onClick={() => setMethod(m)}
             className={`flex-1 rounded-xl py-2 text-xs font-semibold ${method === m
               ? "bg-gradient-primary text-primary-foreground shadow-elegant"
@@ -305,6 +319,12 @@ if (!ad.ok) {
         <div className="rounded-xl border border-destructive/50 bg-destructive/10 p-2.5 text-[11px] leading-relaxed text-destructive">
           ⚠️ Please provide a <b>Gram (TON native)</b> address only.
           Do <b>NOT</b> use a <b>USDT (TON network / Jetton)</b> address — your funds will be lost and cannot be refunded.
+        </div>
+      )}
+      {method === "usdt_bep20" && (
+        <div className="rounded-xl border border-destructive/50 bg-destructive/10 p-2.5 text-[11px] leading-relaxed text-destructive">
+          ⚠️ Please provide a <b>BEP20 (BNB Smart Chain)</b> USDT address only.
+          Sending on any other network results in permanent loss of funds.
         </div>
       )}
       <input type="number" inputMode="decimal" className="w-full rounded-xl border border-border bg-surface-2/60 px-3 py-2 text-sm outline-none focus:border-primary" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder={`USDT amount (min ${cfg.min})`} />
