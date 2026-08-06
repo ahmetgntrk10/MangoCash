@@ -36,11 +36,11 @@ const REF_BONUS_DAILY_ADS_REQUIRED = 10;
 // Server is source of truth for product prices/rates. Any drift with the
 // client `MANGO_MARKET` array is corrected against this table.
 const MARKET_PRODUCTS: Record<string, { cost: number; hourlyRate: number; adsRequired: number }> = {
-  tiny:   { cost: 16700, hourlyRate: 190, adsRequired: 1 },
-  river:  { cost: 24500, hourlyRate: 275, adsRequired: 2 },
-  gold:   { cost: 30100, hourlyRate: 355, adsRequired: 2 },
-  royal:  { cost: 35600, hourlyRate: 430, adsRequired: 3 },
-  commit: { cost: 40500, hourlyRate: 500, adsRequired: 3 },
+  tiny:   { cost: 16700, hourlyRate: 170, adsRequired: 1 },
+  river:  { cost: 24500, hourlyRate: 255, adsRequired: 2 },
+  gold:   { cost: 30100, hourlyRate: 335, adsRequired: 2 },
+  royal:  { cost: 35600, hourlyRate: 400, adsRequired: 3 },
+  commit: { cost: 40500, hourlyRate: 450, adsRequired: 3 },
 };
 const MARKET_EXPIRY_MS = 30 * 24 * 3600 * 1000;
 
