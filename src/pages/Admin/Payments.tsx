@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { apiCall } from "@/lib/api";
 import { formatUsdt } from "@/lib/telegram";
 
-const TABS = ["faucetpay", "binance", "toncoin", "history"] as const;
+const TABS = ["faucetpay", "binance", "toncoin", "usdt_bep20", "history"] as const;
 type TabKey = typeof TABS[number];
 
 export default function AdminPayments() {
@@ -19,19 +19,20 @@ export default function AdminPayments() {
             className={`flex-1 rounded-xl py-1.5 text-xs font-medium transition ${
               tab === t ? "bg-gradient-primary text-primary-foreground shadow-elegant" : "text-muted-foreground"
             }`}>
-            {t === "faucetpay" ? "FaucetPay" : t === "binance" ? "Binance" : t === "toncoin" ? "Toncoin" : "History"}
+            {t === "faucetpay" ? "FaucetPay" : t === "binance" ? "Binance" : t === "toncoin" ? "Toncoin" : t === "usdt_bep20" ? "USDT (BEP20)" : "History"}
           </button>
         ))}
       </div>
       {tab === "faucetpay" && <PendingList method="faucetpay" showBulk />}
       {tab === "binance" && <PendingList method="binance" />}
       {tab === "toncoin" && <PendingList method="toncoin" />}
+      {tab === "usdt_bep20" && <PendingList method="usdt_bep20" />}
       {tab === "history" && <HistoryList />}
     </div>
   );
 }
 
-function PendingList({ method, showBulk }: { method: "faucetpay" | "binance" | "toncoin"; showBulk?: boolean }) {
+function PendingList({ method, showBulk }: { method: "faucetpay" | "binance" | "toncoin" | "usdt_bep20"; showBulk?: boolean }) {
   const qc = useQueryClient();
   const [bulking, setBulking] = useState(false);
   const inflight = useRef<Set<string>>(new Set());
@@ -85,13 +86,13 @@ function PendingList({ method, showBulk }: { method: "faucetpay" | "binance" | "
 
   return (
     <div className="space-y-2">
-      {(method === "faucetpay" || method === "toncoin") && !!items?.length && (
+      {(method === "faucetpay" || method === "toncoin" || method === "usdt_bep20") && !!items?.length && (
         <div className="flex items-center justify-between rounded-2xl bg-surface-1/60 px-3 py-2 text-xs ring-1 ring-border">
           <span className="text-muted-foreground">{items.length} pending request{items.length > 1 ? "s" : ""}</span>
           <span className="font-semibold text-earn">Total: {formatUsdt(totalNet)}</span>
         </div>
       )}
-      {(method === "binance" || method === "toncoin") && !!items?.length && (
+      {(method === "binance" || method === "toncoin" || method === "usdt_bep20") && !!items?.length && (
         <div className="flex items-center justify-between rounded-2xl bg-warning/10 px-3 py-2 text-xs ring-1 ring-warning/30">
           <span className="text-warning">Fee to send @ahmetgntrk11</span>
           <span className="font-semibold text-warning">{formatUsdt(totalFee)} USDT</span>
@@ -127,8 +128,8 @@ function useTonUsd() {
   });
 }
 
-function Card({ it, method, setStatus, busy }: { it: any; method: "faucetpay" | "binance" | "toncoin"; setStatus: (id: string, s: "approved" | "rejected", extras?: { tx_id?: string }) => void; busy?: boolean }) {
-  const fee = Number(it.fee_usdt ?? 0);
+function Card({ it, method, setStatus, busy }: { it: any; method: "faucetpay" | "binance" | "toncoin" | "usdt_bep20"; setStatus: (id: string, s: "approved" | "rejected", extras?: { tx_id?: string }) => void; busy?: boolean }) {
+const fee = Number(it.fee_usdt ?? 0);
   const net = Number(it.amount_net_usdt ?? (Number(it.amount_usdt) - fee));
   const gross = Number(it.amount_usdt);
   const isTon = method === "toncoin";
@@ -185,8 +186,8 @@ function Card({ it, method, setStatus, busy }: { it: any; method: "faucetpay" | 
               className="mt-2 flex items-center gap-1 text-muted-foreground">
               <Copy className="h-3 w-3" /> UID: {it.destination}
             </button>
-          ) : method === "toncoin" ? (
-            <button onClick={() => { navigator.clipboard.writeText(it.destination); toast.success("Toncoin address copied"); }}
+          ) : method === "toncoin" || method === "usdt_bep20" ? (
+            <button onClick={() => { navigator.clipboard.writeText(it.destination); toast.success("Address copied"); }}
               className="mt-2 flex w-full items-center gap-1 truncate text-muted-foreground">
               <Copy className="h-3 w-3 shrink-0" /> <span className="truncate">{it.destination}</span>
             </button>
@@ -196,7 +197,7 @@ function Card({ it, method, setStatus, busy }: { it: any; method: "faucetpay" | 
               <Copy className="h-3 w-3" /> {it.destination}
             </button>
           )}
-          {isTon && (
+          {(isTon || method === "usdt_bep20") && (
             <div className="mt-2 space-y-1.5">
               <input
                 value={txId}
@@ -225,9 +226,9 @@ function Card({ it, method, setStatus, busy }: { it: any; method: "faucetpay" | 
         </div>
         <div className="flex shrink-0 flex-col gap-1">
           <button
-            disabled={busy || (isTon && !txId.trim())}
-            title={isTon && !txId.trim() ? "TxId required" : "Approve"}
-            onClick={() => setStatus(it.id, "approved", isTon ? { tx_id: txId.trim() } : undefined)}
+            disabled={busy || ((isTon || method === "usdt_bep20") && !txId.trim())}
+            title={(isTon || method === "usdt_bep20") && !txId.trim() ? "TxId required" : "Approve"}
+            onClick={() => setStatus(it.id, "approved", (isTon || method === "usdt_bep20") ? { tx_id: txId.trim() } : undefined)}
             className="rounded-lg bg-earn/20 p-1.5 text-earn disabled:opacity-40"
           >
             {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Check className="h-3.5 w-3.5" />}
