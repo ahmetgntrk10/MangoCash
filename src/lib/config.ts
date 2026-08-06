@@ -23,6 +23,7 @@ export const WITHDRAW = {
   faucetpay: { fee: 0,    min: 0.05, label: "FaucetPay" },
   binance: { fee: 0.01, min: 0.05, label: "Binance Pay" },
   toncoin: { fee: 0.05, min: 0.05, label: "Gram (Ton)" },
+  usdt_bep20: { fee: 0.05, min: 0.05, label: "USDT (BEP20)" },
 } as const;
 
 /** Mining (Earn) config — server is source of truth, mirrored client-side for UI. */
