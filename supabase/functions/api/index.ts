@@ -1135,7 +1135,7 @@ try {
       case "admin_pending_withdrawals": {
         await requireAdmin();
         const { data, count } = await supabase.from("withdrawals")
-          .select("*, users:user_tg_id (username, first_name, country, ton_address, faucetpay_address, binance_uid, balance_cloud, balance_usdt)", { count: "exact" })
+          .select("*, users:user_tg_id (username, first_name, country, ton_address, faucetpay_address, binance_uid, usdt_bep20_address, balance_cloud, balance_usdt)", { count: "exact" })
           .eq("method", body.method).in("status", ["pending", "queued", "processing"])
           .order("created_at", { ascending: true });
         return json({ data: data ?? [], total: count ?? 0 });
