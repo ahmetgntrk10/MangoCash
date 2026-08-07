@@ -606,6 +606,26 @@ Deno.serve(async (req) => {
         return json({ entries });
       }
 
+      case "leaderboard": {
+        const colMap: Record<string, string> = {
+          earners: "total_earned_cloud",
+          referrers: "referral_count",
+          balance: "balance_cloud",
+        };
+        const col = colMap[String(body.category || "earners")] || "total_earned_cloud";
+        const { data } = await supabase
+          .from("users")
+          .select(`tg_id, username, first_name, photo_url, ${col}`)
+          .neq("status", "banned")
+          .order(col, { ascending: false })
+          .limit(50);
+        const entries = (data ?? []).map((u: any) => ({
+          tg_id: u.tg_id, username: u.username, first_name: u.first_name,
+          photo_url: u.photo_url, value: u[col],
+        }));
+        return json({ entries });
+      }
+
       // ───── DAILY (UTC 00:00 reset + mandatory ad ticket) ─────
       case "claim_daily": {
         const u = await getUser(); if (!u) return json({ error: "no_user" }, 400);
