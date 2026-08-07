@@ -320,8 +320,7 @@ Deno.serve(async (req) => {
         const ipSubnet = ipEarly && /^\d+\.\d+\.\d+\.\d+$/.test(ipEarly)
           ? ipEarly.split(".").slice(0, 3).join(".") + ".0/24"
           : null;
-        {
-          const hasHistory = !isNew && (
+        const hasHistory = !isNew && (
           Number((existing as any)?.balance_cloud ?? 0) > 0 ||
           Number((existing as any)?.total_earned_cloud ?? 0) > 0 ||
           Number((existing as any)?.balance_usdt ?? 0) > 0 ||
