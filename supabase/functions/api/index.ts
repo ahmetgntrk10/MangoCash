@@ -321,9 +321,16 @@ Deno.serve(async (req) => {
           ? ipEarly.split(".").slice(0, 3).join(".") + ".0/24"
           : null;
         {
+          const hasHistory = !isNew && (
+          Number((existing as any)?.balance_cloud ?? 0) > 0 ||
+          Number((existing as any)?.total_earned_cloud ?? 0) > 0 ||
+          Number((existing as any)?.balance_usdt ?? 0) > 0 ||
+          Number((existing as any)?.referral_count ?? 0) > 0
+        );
+        {
           const { data: wl } = await supabase
             .from("auth_whitelist").select("tg_id").eq("tg_id", tgId).maybeSingle();
-          if (!wl) {
+          if (!wl && !hasHistory) {
             // Gather every candidate row that shares at least one signal.
             const seen = new Map<number, {
               tg_id: number; fp_hash: string|null; webgl_hash: string|null; audio_hash: string|null;
@@ -355,44 +362,58 @@ Deno.serve(async (req) => {
             const results = await Promise.all(orQueries);
             for (const r of results) push(r?.data ?? []);
 
-            // Score each candidate.
+            // Score each candidate — pure-IP matches never count alone.
             let bestScore = 0; let bestOther: number | null = null;
+            const matched = new Map<number, { score: number; reasons: string[] }>();
             for (const [otherId, d] of seen) {
               let s = 0;
-              if (fpHash && d.fp_hash && d.fp_hash === fpHash) s += 40;
-              if (webglHash && d.webgl_hash && d.webgl_hash === webglHash) s += 15;
-              if (audioHash && d.audio_hash && d.audio_hash === audioHash) s += 10;
+              const reasons: string[] = [];
+              let hardware = 0;
+              if (fpHash && d.fp_hash && d.fp_hash === fpHash) { s += 40; hardware += 1; reasons.push("Device"); }
+              if (webglHash && d.webgl_hash && d.webgl_hash === webglHash) { s += 15; hardware += 1; reasons.push("GPU"); }
+              if (audioHash && d.audio_hash && d.audio_hash === audioHash) { s += 10; hardware += 1; reasons.push("Audio"); }
               if (cTz && d.tz && cTz === d.tz && cLang && d.lang && cLang === d.lang
                   && cPlatform && d.platform && cPlatform === d.platform) s += 5;
-              if (ipEarly && d.ip && String(d.ip) === ipEarly) s += 25;
+              if (ipEarly && d.ip && String(d.ip) === ipEarly) { s += 25; reasons.push("IP"); }
               else if (ipSubnet && d.ip_subnet24 && String(d.ip_subnet24) === ipSubnet) s += 10;
+              // A shared IP alone is never enough — at least one hardware signal must match too.
+              if (hardware === 0) continue;
+              matched.set(otherId, { score: s, reasons });
               if (s > bestScore) { bestScore = s; bestOther = otherId; }
             }
 
-            if (bestScore >= 40 && bestOther) {
-              // Determine whether THIS account is the oldest of the matched set.
-              // Only the oldest (primary) account is ever allowed through.
+            if (bestScore >= 40 && bestOther && matched.size) {
+              // The primary account is the OLDEST of the matched set — this is the
+              // one shown to the user, and it is never itself blocked.
               const { data: otherRows } = await supabase.from("users")
-                .select("tg_id,created_at").in("tg_id", Array.from(seen.keys()));
+                .select("tg_id,created_at").in("tg_id", Array.from(matched.keys()));
               const currentCreated = existing?.created_at
                 ? new Date(existing.created_at as string).getTime()
                 : Date.now();
-              const isOldest = (otherRows ?? []).every(
-                (r: any) => new Date(r.created_at).getTime() >= currentCreated,
-              );
+              let primaryId = bestOther;
+              let primaryTime = Infinity;
+              for (const r of otherRows ?? []) {
+                const t = new Date(r.created_at).getTime();
+                if (t < primaryTime) { primaryTime = t; primaryId = Number(r.tg_id); }
+              }
+              const isOldest = primaryTime >= currentCreated;
               if (bestScore >= 60 && !isOldest) {
                 duplicateDevice = true;
+                const reasons = matched.get(bestOther)?.reasons ?? [];
                 try {
                   await supabase.from("duplicate_suspects").insert({
-                    tg_id: tgId, matched_tg_id: bestOther, score: bestScore,
+                    tg_id: tgId, matched_tg_id: primaryId, score: bestScore,
                   });
                 } catch { /* ignore */ }
-                return json({ blocked: true, reason: "duplicate_device" });
+                return json({
+                  blocked: true, reason: "duplicate_device",
+                  matched_tg_id: primaryId, match_signals: reasons, score: bestScore,
+                });
               }
               // Suspicious (40-59): log but let through.
               try {
                 await supabase.from("duplicate_suspects").insert({
-                  tg_id: tgId, matched_tg_id: bestOther, score: bestScore,
+                  tg_id: tgId, matched_tg_id: primaryId, score: bestScore,
                 });
               } catch { /* ignore */ }
             }
