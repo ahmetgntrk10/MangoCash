@@ -9,6 +9,8 @@ export interface AuthState {
   loading: boolean;
   error: string | null;
   blocked?: boolean;
+  matchedTgId?: number | null;
+  matchSignals?: string[];
   tgId: number | null;
   isAdmin: boolean;
   channelsVerified?: boolean;
@@ -83,6 +85,8 @@ export function useAuth(): AuthState {
         if (result?.blocked) {
           setState({
             loading: false, isAdmin: false, tgId: null, blocked: true,
+            matchedTgId: result?.matched_tg_id ?? null,
+            matchSignals: Array.isArray(result?.match_signals) ? result.match_signals : [],
             error: "An account already exists on this device. Please continue with your original account.",
           });
           return;
