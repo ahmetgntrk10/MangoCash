@@ -75,8 +75,6 @@ export default function ProfilePage({ tgId }: { tgId: number | null }) {
           {sheet === "convert" && <ConvertForm user={user} onClose={() => setSheet(null)} />}
           {sheet === "history" && <HistoryView tgId={tgId} />}
           {sheet === "leaderboard" && <LeaderboardView />}
-          {sheet === "history" && <HistoryView tgId={tgId} />}
-          {sheet === "leaderboard" && <LeaderboardView />}
           {sheet === "promo" && <PromoForm tgId={tgId} onClose={() => setSheet(null)} />}
           {sheet === "lang" && <LangPicker onClose={() => setSheet(null)} />}
         </Sheet>
