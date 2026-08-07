@@ -76,6 +76,7 @@ export default function ProfilePage({ tgId }: { tgId: number | null }) {
           {sheet === "history" && <HistoryView tgId={tgId} />}
           {sheet === "leaderboard" && <LeaderboardView />}
           {sheet === "history" && <HistoryView tgId={tgId} />}
+          {sheet === "leaderboard" && <LeaderboardView />}
           {sheet === "promo" && <PromoForm tgId={tgId} onClose={() => setSheet(null)} />}
           {sheet === "lang" && <LangPicker onClose={() => setSheet(null)} />}
         </Sheet>
@@ -348,6 +349,93 @@ if (!ad.ok) {
   );
 }
 
+function LeaderboardView() {
+  const [tab, setTab] = useState<"earners" | "referrers" | "balance">("earners");
+  const [entries, setEntries] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    apiCall<{ entries: any[] }>("leaderboard", { category: tab })
+      .then((res) => { if (!cancelled) setEntries(res.entries ?? []); })
+      .catch(() => { if (!cancelled) setEntries([]); })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, [tab]);
+
+  const top3 = entries.slice(0, 3);
+  const rest = entries.slice(3, 50);
+  const podium = [top3[1], top3[0], top3[2]];
+  const suffix = tab === "referrers" ? "friends" : "🥭";
+  const fmt = (v: number) => Math.round(Number(v || 0)).toLocaleString("en-US");
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-2">
+        <Trophy className="h-5 w-5 text-primary-glow" />
+        <div>
+          <h3 className="font-display text-base font-bold">Leaderboard</h3>
+          <div className="text-[10px] text-muted-foreground">Top 50 ranking</div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-3 gap-2">
+        {(["earners", "referrers", "balance"] as const).map((k) => (
+          <button key={k} onClick={() => setTab(k)}
+            className={`rounded-xl py-2 text-xs font-semibold ${tab === k ? "bg-gradient-primary text-primary-foreground" : "bg-surface-2/60 text-muted-foreground"}`}>
+            {k === "earners" ? "Top Earners" : k === "referrers" ? "Top Referrers" : "Top Balance"}
+          </button>
+        ))}
+      </div>
+
+      {loading ? (
+        <div className="flex justify-center py-8"><Loader2 className="h-5 w-5 animate-spin text-muted-foreground" /></div>
+      ) : entries.length === 0 ? (
+        <div className="py-6 text-center text-sm text-muted-foreground">No data yet</div>
+      ) : (
+        <>
+          <div className="grid grid-cols-3 items-end gap-2">
+            {podium.map((u, i) => u && (
+              <div key={u.tg_id} className={`flex flex-col items-center gap-1 ${i === 1 ? "" : "mt-4"}`}>
+                {i === 1 && <Crown className="h-4 w-4 text-warning" />}
+                <div className="relative">
+                  {u.photo_url ? (
+                    <img src={u.photo_url} className={`rounded-full ring-2 object-cover ${i === 1 ? "h-16 w-16 ring-warning" : "h-12 w-12 ring-border"}`} />
+                  ) : (
+                    <div className={`grid place-items-center rounded-full bg-gradient-primary font-bold ${i === 1 ? "h-16 w-16 text-lg" : "h-12 w-12 text-sm"}`}>
+                      {(u.first_name ?? "?")[0]}
+                    </div>
+                  )}
+                  <div className="absolute -bottom-1 -right-1 grid h-5 w-5 place-items-center rounded-full bg-surface-2 text-[10px] font-bold ring-1 ring-border">
+                    {i === 1 ? 1 : i === 0 ? 2 : 3}
+                  </div>
+                </div>
+                <div className="max-w-full truncate text-[11px] font-semibold">@{u.username || u.first_name || "—"}</div>
+                <div className="text-[11px] font-bold text-earn">{fmt(u.value)} {suffix}</div>
+              </div>
+            ))}
+          </div>
+
+          <div className="max-h-[45vh] overflow-y-auto overflow-hidden rounded-2xl bg-gradient-card shadow-elegant">
+            {rest.map((u, idx) => (
+              <div key={u.tg_id} className="flex items-center gap-3 border-b border-border px-3 py-2.5 last:border-0">
+                <div className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-surface-2 text-[10px] font-bold text-muted-foreground">{idx + 4}</div>
+                {u.photo_url ? (
+                  <img src={u.photo_url} className="h-8 w-8 rounded-full object-cover" />
+                ) : (
+                  <div className="grid h-8 w-8 place-items-center rounded-full bg-gradient-primary text-xs font-bold">{(u.first_name ?? "?")[0]}</div>
+                )}
+                <div className="flex-1 truncate text-xs font-semibold">@{u.username || u.first_name || "—"}</div>
+                <div className="shrink-0 text-xs font-bold text-earn">{fmt(u.value)} {suffix}</div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
 function LeaderboardView() {
   const [tab, setTab] = useState<"earners" | "referrers" | "balance">("earners");
   const [entries, setEntries] = useState<any[]>([]);
