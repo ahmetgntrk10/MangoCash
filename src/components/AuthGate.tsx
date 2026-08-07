@@ -50,8 +50,22 @@ export default function AuthGate({ auth, children }: { auth: AuthState; children
             Please continue with your original account or contact support if this is a mistake.
           </p>
 
+          {auth.matchedTgId ? (
+            <div className="relative mt-4 rounded-2xl border border-destructive/25 bg-destructive/10 px-3 py-2 text-left">
+              <div className="text-[10px] uppercase tracking-wide text-destructive/80">
+                {(auth.matchSignals?.length ? auth.matchSignals.join(" + ") : "Device")} Matches with
+              </div>
+              <div className="mt-0.5 font-mono text-sm font-semibold text-foreground">
+                {auth.matchedTgId}
+              </div>
+              <div className="mt-1 text-[11px] text-muted-foreground">
+                This is your first (original) account — please continue with it.
+              </div>
+            </div>
+          ) : null}
+
           <div className="relative mt-5 flex items-center justify-center gap-2 rounded-2xl border border-warning/30 bg-warning/10 px-3 py-2 text-[11px] text-warning">
-            <ShieldAlert className="h-4 w-4" /> Device fingerprint protection is active
+          <ShieldAlert className="h-4 w-4" /> Device fingerprint protection is active
           </div>
 
           <a
