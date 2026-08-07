@@ -19,7 +19,7 @@ export async function showTowerAdsRewarded(): Promise<AdResult> {
     try {
       const ads = new window.TowerAds!({
         apiKey: "ca5fb16ca37e0d66d722d449e6616e04",
-+        placementId: "plc_ca5008e82312f4ef",
+        placementId: "plc_ca5008e82312f4ef",
         onRewardEarned() {
           resolve({ ok: true });
         },
