@@ -73,6 +73,7 @@ export default function ProfilePage({ tgId }: { tgId: number | null }) {
         <Sheet onClose={() => setSheet(null)}>
           {sheet === "address" && <AddressForm user={user} onClose={() => setSheet(null)} />}
           {sheet === "convert" && <ConvertForm user={user} onClose={() => setSheet(null)} />}
+          {sheet === "withdraw" && <WithdrawForm user={user} onClose={() => setSheet(null)} />}
           {sheet === "history" && <HistoryView tgId={tgId} />}
           {sheet === "leaderboard" && <LeaderboardView />}
           {sheet === "promo" && <PromoForm tgId={tgId} onClose={() => setSheet(null)} />}
